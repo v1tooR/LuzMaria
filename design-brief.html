@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Brief — Luz Maria Artesanal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:        #2563eb;
+      --accent-light:  #eff6ff;
+      --accent-ring:   rgba(37, 99, 235, 0.18);
+      --accent-dark:   #1d4ed8;
+      --gray-50:  #fafafa;
+      --gray-100: #f4f4f5;
+      --gray-200: #e4e4e7;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --wf-dash:  1.5px dashed #bbb;
+      --topbar-h: 44px;
+      --tabs-h:   0px; /* sobrescrito em mobile */
+      --pane-hdr: 38px;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #fff;
+      color: var(--gray-900);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    /* ─── TOP BAR ─────────────────────────────── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--topbar-h);
+      background: var(--gray-900);
+      color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; z-index: 200;
+      font-size: 12px; letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--gray-800);
+    }
+    .topbar-left  { display: flex; align-items: center; gap: 12px; }
+    .topbar-brand { font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; }
+    .topbar-sep   { width: 1px; height: 16px; background: var(--gray-700); }
+    .topbar-doc   { color: var(--gray-400); }
+
+    .topbar-active {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(37,99,235,0.25);
+      border: 1px solid rgba(37,99,235,0.4);
+      padding: 3px 12px; border-radius: 2px;
+      font-size: 12px; color: #93c5fd;
+    }
+    .topbar-active .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #60a5fa;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+    .topbar-right { color: var(--gray-500); font-size: 12px; }
+
+    /* ─── LAYOUT ──────────────────────────────── */
+    .layout {
+      display: flex;
+      height: 100vh;
+      padding-top: var(--topbar-h);
+    }
+
+    /* ─── COPY PANE (LEFT) ────────────────────── */
+    .copy-pane {
+      flex: 0 0 44%;
+      overflow-y: scroll;
+      height: 100%;
+      border-right: 2px solid var(--gray-200);
+      scroll-snap-type: y mandatory;
+      scroll-padding-top: var(--pane-hdr);
+    }
+
+    .pane-header {
+      position: sticky; top: 0; z-index: 10;
+      height: var(--pane-hdr);
+      padding: 0 20px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--gray-500);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .pane-header .chip {
+      display: inline-block;
+      background: var(--gray-200); color: var(--gray-600);
+      padding: 2px 8px; font-size: 11px; border-radius: 2px;
+    }
+
+    /* ─── COPY SECTIONS ───────────────────────── */
+    .copy-section {
+      scroll-snap-align: start;
+      min-height: calc(100vh - var(--topbar-h) - var(--pane-hdr) - var(--tabs-h));
+      padding: 32px 28px 40px;
+      border-bottom: 1px solid var(--gray-100);
+      border-left: 4px solid transparent;
+      display: flex; flex-direction: column; justify-content: flex-start;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .copy-section.active {
+      background: var(--accent-light);
+      border-left-color: var(--accent);
+    }
+
+    .cs-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--gray-200); color: var(--gray-600);
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 3px 10px; margin-bottom: 14px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .copy-section.active .cs-tag { background: var(--accent); color: #fff; }
+
+    .copy-section h2 {
+      font-size: 20px; font-weight: 700; line-height: 1.3;
+      color: var(--gray-900); margin-bottom: 12px;
+    }
+    .copy-section p {
+      font-size: 15px; color: var(--gray-600);
+      line-height: 1.7; margin-bottom: 8px;
+    }
+    .copy-section ul {
+      margin: 10px 0 0 20px; color: var(--gray-600);
+      font-size: 15px; line-height: 2;
+    }
+
+    .cs-cta {
+      display: inline-block; margin-top: 16px;
+      background: var(--gray-900); color: #fff;
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 10px 20px;
+    }
+
+    .cs-wh {
+      margin-top: 8px; padding: 9px 13px;
+      background: #f0fdf4; border-left: 2px solid #86efac;
+      font-size: 13px; color: var(--gray-500);
+      font-style: italic; line-height: 1.5;
+    }
+
+    .cs-product-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; margin-top: 16px;
+    }
+    .cs-product { border: 1px solid var(--gray-200); padding: 14px; background: #fff; }
+    .cs-product h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--gray-800); }
+    .cs-product p  { font-size: 13px; margin-bottom: 8px; }
+
+    .cs-steps { margin-top: 12px; counter-reset: step; }
+    .cs-step {
+      counter-increment: step;
+      display: flex; align-items: center; gap: 12px;
+      padding: 9px 0; border-bottom: 1px dashed var(--gray-200);
+      font-size: 15px; color: var(--gray-600);
+    }
+    .cs-step::before {
+      content: counter(step);
+      min-width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--gray-200); border-radius: 50%;
+      font-size: 12px; font-weight: 700; color: var(--gray-700);
+    }
+
+    .cs-diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .cs-diff {
+      border: 1px solid var(--gray-200); padding: 11px;
+      background: var(--gray-50); font-size: 14px; color: var(--gray-600);
+    }
+    .cs-diff strong { display: block; color: var(--gray-900); margin-bottom: 3px; font-size: 14px; }
+
+    .cs-faq-item { padding: 11px 0; border-bottom: 1px dashed var(--gray-200); }
+    .cs-faq-item strong { font-size: 15px; color: var(--gray-800); display: block; margin-bottom: 4px; }
+    .cs-faq-item p { margin: 0; font-size: 14px; }
+
+    /* ─── WIREFRAME PANE (RIGHT) ──────────────── */
+    .wf-pane {
+      flex: 1;
+      overflow-y: auto;
+      height: 100%;
+      background: var(--gray-50);
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .wf-pane .pane-header { background: var(--gray-100); }
+
+    .wf-progress {
+      position: sticky; top: var(--pane-hdr); z-index: 9;
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 7px 16px;
+      display: flex; gap: 5px; align-items: center; flex-wrap: wrap;
+    }
+    .wf-progress-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
+    .wf-pip {
+      width: 28px; height: 6px;
+      background: var(--gray-300); border-radius: 1px;
+      transition: background 0.25s ease, width 0.25s ease;
+    }
+    .wf-pip.active { background: var(--accent); width: 44px; }
+
+    .wf-nav-placeholder {
+      margin: 10px 14px 4px;
+      border: var(--wf-dash); padding: 7px 12px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .wf-nav-logo-box { border: var(--wf-dash); padding: 3px 10px; font-size: 9px; color: var(--gray-400); }
+    .wf-nav-links { display: flex; gap: 10px; }
+    .wf-nav-lnk { height: 6px; width: 28px; background: var(--gray-200); border-radius: 1px; }
+    .wf-nav-btn  { border: 1.5px solid var(--gray-400); padding: 3px 8px; font-size: 8px; color: var(--gray-400); }
+    .wf-nav-tag  { font-size: 10px; color: var(--gray-400); margin-bottom: 4px; letter-spacing: 0.05em; }
+
+    .wf-block {
+      margin: 8px 14px;
+      border: 2px solid var(--gray-200);
+      background: #fff;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .wf-block.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-ring), 0 4px 20px rgba(37,99,235,0.10);
+    }
+
+    .wf-label {
+      padding: 7px 12px;
+      background: var(--gray-100);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--gray-500);
+      transition: background 0.25s, color 0.25s, border-color 0.25s;
+    }
+    .wf-block.active .wf-label {
+      background: var(--accent);
+      border-bottom-color: var(--accent-dark);
+      color: #fff;
+    }
+    .wf-indicator {
+      display: none;
+      font-size: 9px; font-weight: 700;
+      background: rgba(255,255,255,0.22);
+      padding: 1px 6px; border-radius: 2px;
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .wf-block.active .wf-indicator { display: inline-block; }
+    .wf-body { padding: 12px; }
+
+    /* WF primitives */
+    .ph {
+      border: var(--wf-dash); background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-400); font-size: 9px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .tl { height: 8px; background: var(--gray-200); border-radius: 2px; margin-bottom: 5px; }
+    .tl.w100{width:100%} .tl.w85{width:85%} .tl.w70{width:70%}
+    .tl.w55{width:55%}   .tl.w40{width:40%}
+    .tl.title    { height: 13px; background: var(--gray-300); margin-bottom: 8px; }
+    .tl.subtitle { height: 10px; background: var(--gray-300); margin-bottom: 8px; }
+
+    .wf-btn {
+      border: 2px solid var(--gray-800); padding: 5px 12px;
+      font-size: 8px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      display: inline-block; color: var(--gray-800);
+    }
+    .wf-btn.sm {
+      border-color: var(--gray-400); color: var(--gray-500);
+      font-size: 8px; padding: 3px 8px; display: block;
+      text-align: center; margin-top: 6px; border-width: 1.5px;
+    }
+    .wf-btn.inv { border-color: #fff; color: #fff; }
+
+    .g2  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .g3  { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+    .c2  { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: start; }
+    .c2r { display: grid; grid-template-columns: 1fr 130px; gap: 12px; align-items: start; }
+
+    .wf-card { border: var(--wf-dash); padding: 8px; background: #fff; }
+
+    .wf-step-row { display: flex; }
+    .wf-step {
+      flex: 1; border: var(--wf-dash); border-right: none;
+      padding: 7px 4px; text-align: center;
+      font-size: 8px; color: var(--gray-500); background: #fff;
+    }
+    .wf-step:last-child { border-right: var(--wf-dash); }
+    .wf-step-n {
+      width: 18px; height: 18px; border: 1.5px solid var(--gray-400);
+      border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 8px; font-weight: 700;
+      color: var(--gray-600); margin: 0 auto 5px; background: var(--gray-100);
+    }
+    .wf-faq {
+      border: var(--wf-dash); margin-bottom: 4px; padding: 6px 10px;
+      background: #fff; display: flex; justify-content: space-between;
+      font-size: 9px; color: var(--gray-500);
+    }
+    .wf-dark .wf-body { background: #1a1a1a; }
+    .wf-dark .tl { background: #444; }
+    .wf-dark .tl.title { background: #555; }
+    .wf-footer {
+      margin: 6px 14px 16px;
+      border: var(--wf-dash); padding: 10px; background: var(--gray-100);
+    }
+
+    /* ─── MOBILE TABS ─────────────────────────── */
+    .mobile-tabs { display: none; }
+
+    @media (max-width: 768px) {
+      :root {
+        --tabs-h: 56px;
+      }
+
+      .topbar-right,
+      .topbar-sep,
+      .topbar-doc { display: none; }
+
+      .topbar-active { font-size: 11px; padding: 3px 8px; }
+
+      .layout {
+        flex-direction: column;
+        padding-bottom: var(--tabs-h);
+      }
+
+      /* cada pane ocupa o espaço todo, alternado via JS */
+      .copy-pane,
+      .wf-pane {
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;
+        border-right: none;
+        display: none;
+      }
+
+      .copy-pane.tab-active,
+      .wf-pane.tab-active {
+        display: block;
+      }
+
+      /* mobile: section height agora subtrai também o tabs-h */
+      .copy-section {
+        min-height: calc(100vh - var(--topbar-h) - var(--pane-hdr) - var(--tabs-h));
+      }
+
+      /* ── Tab bar ── */
+      .mobile-tabs {
+        display: flex;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        height: var(--tabs-h);
+        background: var(--gray-900);
+        border-top: 2px solid var(--gray-700);
+        z-index: 300;
+      }
+
+      .mob-tab {
+        flex: 1;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 3px;
+        color: var(--gray-500);
+        font-size: 10px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        cursor: pointer;
+        border-top: 3px solid transparent;
+        transition: color 0.2s ease, border-color 0.2s ease;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mob-tab.active {
+        color: #fff;
+        border-top-color: var(--accent);
+      }
+      .mob-tab-icon {
+        font-size: 20px;
+        line-height: 1;
+      }
+      .mob-tab-sep {
+        width: 1px; align-self: stretch;
+        background: var(--gray-700);
+        margin: 10px 0;
+      }
+
+      /* wireframe pane on mobile: hide progress sticky offset issue */
+      .wf-progress { top: var(--pane-hdr); }
+
+      /* product grid: 1 col on small screens */
+      .cs-product-grid { grid-template-columns: 1fr; }
+      .cs-diff-grid    { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── TOP BAR ──────────────────────────────── -->
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-brand">Luz Maria Artesanal</span>
+    <div class="topbar-sep"></div>
+    <span class="topbar-doc">Design Brief</span>
+  </div>
+  <div class="topbar-active">
+    <div class="dot"></div>
+    <span id="topActiveLabel">Role o copy para navegar</span>
+  </div>
+  <span class="topbar-right">11 seções · Copy + Wireframe</span>
+</header>
+
+<div class="layout">
+
+  <!-- ══════════════════════════════════════════
+       COLUNA ESQUERDA — COPY
+  ═════════════════════════════════════════════ -->
+  <div class="copy-pane tab-active" id="copyPane">
+    <div class="pane-header">
+      <span>Copy</span>
+      <span class="chip">Conteúdo da Landing Page</span>
+    </div>
+
+    <!-- S1 -->
+    <div class="copy-section" data-section="s1" id="copy-s1">
+      <div class="cs-tag">S1 · Hero / Primeira dobra</div>
+      <h2>Velas artesanais católicas para iluminar momentos de fé</h2>
+      <p>Peças feitas à mão, com delicadeza, significado e inspiração em Nossa Senhora Aparecida. Perfeitas para presentear, decorar seu cantinho de oração ou tornar datas especiais ainda mais memoráveis.</p>
+      <span class="cs-cta">[ CTA ] Quero fazer minha encomenda</span>
+    </div>
+
+    <!-- S2 -->
+    <div class="copy-section" data-section="s2" id="copy-s2">
+      <div class="cs-tag">S2 · Frase de Impacto</div>
+      <h2>"Mais do que uma vela, uma lembrança de fé, cuidado e presença de Deus nos pequenos detalhes."</h2>
+      <p>Cada peça da Luz Maria Artesanal é produzida manualmente, pensada para transmitir beleza, devoção e carinho em cada acabamento.</p>
+    </div>
+
+    <!-- S3 -->
+    <div class="copy-section" data-section="s3" id="copy-s3">
+      <div class="cs-tag">S3 · Sobre a Marca</div>
+      <h2>Feitas à mão, com fé e propósito</h2>
+      <p>A Luz Maria Artesanal nasceu para transformar velas em presentes cheios de significado. Cada criação carrega cuidado, beleza e uma inspiração especial na fé católica, especialmente na devoção a Nossa Senhora Aparecida.</p>
+      <p>São velas ideais para quem deseja presentear alguém querido, decorar um oratório, montar um cantinho de oração ou eternizar momentos religiosos com delicadeza.</p>
+    </div>
+
+    <!-- S4 -->
+    <div class="copy-section" data-section="s4" id="copy-s4">
+      <div class="cs-tag">S4 · Produtos</div>
+      <h2>Escolha sua vela artesanal</h2>
+      <p>Conheça alguns dos modelos disponíveis e fale diretamente pelo WhatsApp para consultar valores, disponibilidade e personalização.</p>
+      <div class="cs-product-grid">
+        <div class="cs-product">
+          <h4>Vela Nossa Senhora Aparecida</h4>
+          <p>Peça delicada e devocional, ideal para oratórios, cantinhos de oração e presentes especiais.</p>
+          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse na Vela Nossa Senhora Aparecida. Pode me passar valores, disponibilidade e prazo de envio?"</div>
+        </div>
+        <div class="cs-product">
+          <h4>Vela Personalizada</h4>
+          <p>Peça única com nome, detalhes personalizados ou intenção especial.</p>
+          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse em uma vela personalizada. Pode me explicar as opções, valores e prazo de produção?"</div>
+        </div>
+        <div class="cs-product">
+          <h4>Kit Presente de Fé</h4>
+          <p>Presente delicado, cheio de significado. Ideal para aniversários, Dia das Mães, datas religiosas.</p>
+          <div class="cs-wh">WhatsApp: "Vim pela landing page e gostaria de saber mais sobre o Kit Presente de Fé. Pode me enviar as opções disponíveis?"</div>
+        </div>
+        <div class="cs-product">
+          <h4>Velas para Oratório</h4>
+          <p>Artesanais pensadas para deixar o cantinho de oração mais bonito, acolhedor e especial.</p>
+          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse nas velas para oratório. Pode me enviar os modelos disponíveis?"</div>
+        </div>
+        <div class="cs-product" style="grid-column:1/-1;">
+          <h4>Lembrancinhas Religiosas</h4>
+          <p>Personalizadas para batizado, crisma, catequese, encontros de oração, grupos de igreja e datas especiais.</p>
+          <div class="cs-wh">WhatsApp: "Vim pela landing page e gostaria de saber mais sobre lembrancinhas religiosas personalizadas. Pode me passar as opções para eventos?"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="copy-section" data-section="s5" id="copy-s5">
+      <div class="cs-tag">S5 · Personalização</div>
+      <h2>Uma vela feita especialmente para o seu momento</h2>
+      <p>Você pode encomendar velas personalizadas para presentes, datas comemorativas, eventos religiosos, lembrancinhas ou intenções especiais.</p>
+      <p>Cada detalhe é pensado com carinho para que a peça tenha significado e combine com a ocasião.</p>
+      <span class="cs-cta">[ CTA ] Falar sobre personalização</span>
+    </div>
+
+    <!-- S6 -->
+    <div class="copy-section" data-section="s6" id="copy-s6">
+      <div class="cs-tag">S6 · Para Quem É</div>
+      <h2>Perfeita para quem deseja presentear com significado</h2>
+      <p>As velas da Luz Maria Artesanal são ideais para:</p>
+      <ul>
+        <li>Presentear alguém especial</li>
+        <li>Decorar seu cantinho de oração</li>
+        <li>Montar um oratório delicado</li>
+        <li>Dar lembrancinhas em eventos religiosos</li>
+        <li>Celebrar datas católicas</li>
+        <li>Expressar carinho através da fé</li>
+      </ul>
+    </div>
+
+    <!-- S7 -->
+    <div class="copy-section" data-section="s7" id="copy-s7">
+      <div class="cs-tag">S7 · Como Funciona</div>
+      <h2>Comprar é simples</h2>
+      <div class="cs-steps">
+        <div class="cs-step">Escolha o modelo desejado</div>
+        <div class="cs-step">Clique no botão do produto</div>
+        <div class="cs-step">Fale pelo WhatsApp</div>
+        <div class="cs-step">Confira valores, prazo e personalização</div>
+        <div class="cs-step">Receba sua vela artesanal em casa</div>
+      </div>
+      <p style="margin-top:12px; font-size:14px; color:var(--gray-500);">Enviamos para todo o Brasil.</p>
+    </div>
+
+    <!-- S8 -->
+    <div class="copy-section" data-section="s8" id="copy-s8">
+      <div class="cs-tag">S8 · Diferenciais</div>
+      <h2>Por que escolher a Luz Maria Artesanal?</h2>
+      <div class="cs-diff-grid">
+        <div class="cs-diff"><strong>Produção feita à mão</strong>Cada peça é única e cuidadosa.</div>
+        <div class="cs-diff"><strong>Peças personalizadas</strong>Nome, data ou intenção especial.</div>
+        <div class="cs-diff"><strong>Inspiração na fé</strong>Devoção em cada detalhe.</div>
+        <div class="cs-diff"><strong>Para eventos</strong>Kits e lembrancinhas sob encomenda.</div>
+        <div class="cs-diff"><strong>Atendimento WhatsApp</strong>Direto e personalizado.</div>
+        <div class="cs-diff"><strong>Envio nacional</strong>Para todo o Brasil.</div>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="copy-section" data-section="s9" id="copy-s9">
+      <div class="cs-tag">S9 · Chamada Emocional</div>
+      <h2>"A fé também mora nos detalhes."</h2>
+      <p>Uma vela acesa pode tornar um ambiente mais acolhedor, uma oração mais especial e um presente ainda mais cheio de significado.</p>
+      <p>Escolha uma peça feita com carinho para iluminar momentos importantes da sua vida.</p>
+      <span class="cs-cta">[ CTA ] Quero escolher minha vela</span>
+    </div>
+
+    <!-- S10 -->
+    <div class="copy-section" data-section="s10" id="copy-s10">
+      <div class="cs-tag">S10 · Perguntas Frequentes</div>
+      <h2>Dúvidas frequentes</h2>
+      <div class="cs-faq-item">
+        <strong>As velas são feitas à mão?</strong>
+        <p>Sim. Cada vela é produzida artesanalmente, com cuidado em cada detalhe.</p>
+      </div>
+      <div class="cs-faq-item">
+        <strong>Posso personalizar minha vela?</strong>
+        <p>Sim. É possível consultar opções de personalização pelo WhatsApp.</p>
+      </div>
+      <div class="cs-faq-item">
+        <strong>Vocês enviam para todo o Brasil?</strong>
+        <p>Sim. Os envios são feitos para diferentes regiões do Brasil.</p>
+      </div>
+      <div class="cs-faq-item">
+        <strong>Posso encomendar para eventos?</strong>
+        <p>Sim. Trabalhamos com lembrancinhas para batizado, crisma, catequese e encontros de oração.</p>
+      </div>
+      <div class="cs-faq-item">
+        <strong>Como faço para comprar?</strong>
+        <p>Basta escolher o produto e clicar no botão para falar pelo WhatsApp.</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="copy-section" data-section="s11" id="copy-s11">
+      <div class="cs-tag">S11 · CTA Final</div>
+      <h2>Ilumine momentos especiais com uma vela feita à mão</h2>
+      <p>Escolha sua vela artesanal católica e fale agora pelo WhatsApp para consultar modelos, valores e disponibilidade.</p>
+      <span class="cs-cta">[ CTA PRINCIPAL ] Fazer minha encomenda</span>
+    </div>
+
+    <div style="height:1px; scroll-snap-align:start;"></div>
+  </div><!-- /copy-pane -->
+
+
+  <!-- ══════════════════════════════════════════
+       COLUNA DIREITA — WIREFRAME
+  ═════════════════════════════════════════════ -->
+  <div class="wf-pane" id="wfPane">
+    <div class="pane-header" style="background:var(--gray-100);">
+      <span>Wireframe</span>
+      <span class="chip">Estrutura da Página</span>
+    </div>
+
+    <div class="wf-progress">
+      <span class="wf-progress-label">Seções</span>
+      <div class="wf-pip" data-pip="s1"  title="S1 Hero"></div>
+      <div class="wf-pip" data-pip="s2"  title="S2 Impacto"></div>
+      <div class="wf-pip" data-pip="s3"  title="S3 Sobre"></div>
+      <div class="wf-pip" data-pip="s4"  title="S4 Produtos"></div>
+      <div class="wf-pip" data-pip="s5"  title="S5 Personal."></div>
+      <div class="wf-pip" data-pip="s6"  title="S6 Público"></div>
+      <div class="wf-pip" data-pip="s7"  title="S7 Como Funciona"></div>
+      <div class="wf-pip" data-pip="s8"  title="S8 Diferenciais"></div>
+      <div class="wf-pip" data-pip="s9"  title="S9 Emocional"></div>
+      <div class="wf-pip" data-pip="s10" title="S10 FAQ"></div>
+      <div class="wf-pip" data-pip="s11" title="S11 CTA Final"></div>
+    </div>
+
+    <div style="margin:10px 14px 0;">
+      <div class="wf-nav-tag">↑ Navbar (fixa no topo)</div>
+      <div class="wf-nav-placeholder">
+        <div class="wf-nav-logo-box">[ LOGO ]</div>
+        <div class="wf-nav-links">
+          <div class="wf-nav-lnk"></div><div class="wf-nav-lnk"></div>
+          <div class="wf-nav-lnk"></div><div class="wf-nav-lnk"></div>
+        </div>
+        <div class="wf-nav-btn">WhatsApp</div>
+      </div>
+    </div>
+
+    <!-- S1 Hero -->
+    <div class="wf-block" data-wf="s1" id="wf-s1">
+      <div class="wf-label">S1 · Hero<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="c2">
+          <div>
+            <div class="tl title w85"></div>
+            <div class="tl w100"></div><div class="tl w100"></div>
+            <div class="tl w70" style="margin-bottom:12px;"></div>
+            <div class="wf-btn">Quero fazer minha encomenda</div>
+          </div>
+          <div class="ph" style="height:96px;">[ IMAGEM HERO ]</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S2 Impacto -->
+    <div class="wf-block" data-wf="s2" id="wf-s2">
+      <div class="wf-label">S2 · Frase de Impacto<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body" style="background:var(--gray-100); padding:20px 48px; text-align:center;">
+        <div class="tl title" style="margin:0 auto 6px; width:80%;"></div>
+        <div class="tl w85" style="margin:0 auto 4px;"></div>
+        <div class="tl w55" style="margin:0 auto 14px;"></div>
+        <div class="tl w100" style="margin:0 auto 4px;"></div>
+        <div class="tl w70" style="margin:0 auto;"></div>
+      </div>
+    </div>
+
+    <!-- S3 Sobre -->
+    <div class="wf-block" data-wf="s3" id="wf-s3">
+      <div class="wf-label">S3 · Sobre a Marca<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="c2">
+          <div class="ph" style="height:90px;">[ FOTO ARTESÃ ]</div>
+          <div>
+            <div class="tl subtitle w70"></div>
+            <div class="tl w100"></div><div class="tl w100"></div>
+            <div class="tl w85" style="margin-bottom:10px;"></div>
+            <div class="tl w55"></div><div class="tl w55"></div><div class="tl w55"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 Produtos -->
+    <div class="wf-block" data-wf="s4" id="wf-s4">
+      <div class="wf-label">S4 · Produtos — 5 cards<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="tl subtitle w60"></div>
+        <div class="tl w85" style="margin-bottom:10px;"></div>
+        <div class="g3" style="margin-bottom:8px;">
+          <div class="wf-card">
+            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
+            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
+            <div class="wf-btn sm">Quero essa vela</div>
+          </div>
+          <div class="wf-card">
+            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
+            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
+            <div class="wf-btn sm">Quero personalizar</div>
+          </div>
+          <div class="wf-card">
+            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
+            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
+            <div class="wf-btn sm">Montar um presente</div>
+          </div>
+        </div>
+        <div class="g2">
+          <div class="wf-card">
+            <div class="ph" style="height:40px;margin-bottom:5px;font-size:8px;">[ FOTO ]</div>
+            <div class="tl w55"></div><div class="tl w85"></div>
+            <div class="wf-btn sm">Para meu oratório</div>
+          </div>
+          <div class="wf-card">
+            <div class="ph" style="height:40px;margin-bottom:5px;font-size:8px;">[ FOTO ]</div>
+            <div class="tl w55"></div><div class="tl w85"></div>
+            <div class="wf-btn sm">Para meu evento</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 Personalização -->
+    <div class="wf-block" data-wf="s5" id="wf-s5">
+      <div class="wf-label">S5 · Personalização<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body" style="background:var(--gray-100);">
+        <div class="c2r">
+          <div>
+            <div class="tl subtitle w75"></div>
+            <div class="tl w100"></div><div class="tl w100"></div>
+            <div class="tl w70" style="margin-bottom:10px;"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;">
+              <div class="ph" style="height:16px;width:55px;font-size:7px;">tag</div>
+              <div class="ph" style="height:16px;width:75px;font-size:7px;">tag</div>
+              <div class="ph" style="height:16px;width:65px;font-size:7px;">tag</div>
+              <div class="ph" style="height:16px;width:70px;font-size:7px;">tag</div>
+            </div>
+            <div class="wf-btn">Falar sobre personalização</div>
+          </div>
+          <div class="ph" style="height:88px;">[ IMAGEM ]</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S6 Para quem -->
+    <div class="wf-block" data-wf="s6" id="wf-s6">
+      <div class="wf-label">S6 · Para Quem É<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="tl subtitle w75" style="margin-bottom:10px;"></div>
+        <div class="g3">
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S7 Como funciona -->
+    <div class="wf-block" data-wf="s7" id="wf-s7">
+      <div class="wf-label">S7 · Como Funciona<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="tl subtitle w55" style="margin-bottom:8px;"></div>
+        <div class="wf-step-row">
+          <div class="wf-step"><div class="wf-step-n">1</div>Escolha</div>
+          <div class="wf-step"><div class="wf-step-n">2</div>Clique</div>
+          <div class="wf-step"><div class="wf-step-n">3</div>WhatsApp</div>
+          <div class="wf-step"><div class="wf-step-n">4</div>Confirme</div>
+          <div class="wf-step"><div class="wf-step-n">5</div>Receba</div>
+        </div>
+        <div class="ph" style="height:22px;margin-top:8px;font-size:8px;">[ Enviamos para todo o Brasil ]</div>
+      </div>
+    </div>
+
+    <!-- S8 Diferenciais -->
+    <div class="wf-block" data-wf="s8" id="wf-s8">
+      <div class="wf-label">S8 · Diferenciais<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="tl subtitle w70" style="margin-bottom:8px;"></div>
+        <div class="g3">
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 1</div>
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 2</div>
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 3</div>
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 4</div>
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 5</div>
+          <div class="ph" style="height:42px;font-size:8px;">diferencial 6</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S9 Emocional -->
+    <div class="wf-block" data-wf="s9" id="wf-s9">
+      <div class="wf-label">S9 · Chamada Emocional<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body" style="background:var(--gray-100);text-align:center;padding:20px 32px;">
+        <div class="tl title" style="margin:0 auto 8px;width:72%;"></div>
+        <div class="ph" style="height:56px;max-width:260px;margin:0 auto 10px;font-size:8px;">[ IMAGEM EMOCIONAL ]</div>
+        <div class="tl w85" style="margin:0 auto 4px;"></div>
+        <div class="tl w70" style="margin:0 auto 14px;"></div>
+        <div class="wf-btn" style="font-size:8px;">Quero escolher minha vela</div>
+      </div>
+    </div>
+
+    <!-- S10 FAQ -->
+    <div class="wf-block" data-wf="s10" id="wf-s10">
+      <div class="wf-label">S10 · FAQ<span class="wf-indicator">◀ lendo agora</span></div>
+      <div class="wf-body">
+        <div class="tl subtitle w50" style="margin-bottom:8px;"></div>
+        <div class="wf-faq">As velas são feitas à mão?<span>+</span></div>
+        <div class="wf-faq">Posso personalizar minha vela?<span>+</span></div>
+        <div class="wf-faq">Vocês enviam para todo o Brasil?<span>+</span></div>
+        <div class="wf-faq">Posso encomendar para eventos?<span>+</span></div>
+        <div class="wf-faq">Como faço para comprar?<span>+</span></div>
+      </div>
+    </div>
+
+    <!-- S11 CTA Final -->
+    <div class="wf-block wf-dark" data-wf="s11" id="wf-s11">
+      <div class="wf-label" style="background:#2a2a2a;border-color:#3a3a3a;color:#aaa;">
+        S11 · CTA Final<span class="wf-indicator">◀ lendo agora</span>
+      </div>
+      <div class="wf-body" style="background:#1a1a1a;text-align:center;padding:20px 40px;">
+        <div class="tl title" style="width:78%;margin:0 auto 6px;"></div>
+        <div class="tl" style="width:90%;margin:0 auto 4px;background:#444;"></div>
+        <div class="tl" style="width:70%;margin:0 auto 16px;background:#444;"></div>
+        <div class="wf-btn inv" style="font-size:8px;">Fazer minha encomenda</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="wf-footer">
+      <div style="font-size:9px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Footer</div>
+      <div class="g3">
+        <div>
+          <div class="tl w55" style="margin-bottom:4px;"></div>
+          <div class="tl w40"></div><div class="tl w40"></div>
+        </div>
+        <div>
+          <div class="tl w55" style="margin-bottom:4px;"></div>
+          <div class="tl w70"></div><div class="tl w70"></div><div class="tl w70"></div>
+        </div>
+        <div>
+          <div class="tl w55" style="margin-bottom:4px;"></div>
+          <div class="tl w70"></div><div class="tl w70"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /wf-pane -->
+
+</div><!-- /layout -->
+
+<!-- ─── MOBILE TABS (visível apenas em ≤768px) ── -->
+<nav class="mobile-tabs" id="mobileTabs">
+  <button class="mob-tab active" id="tabCopy" onclick="switchTab('copy')" aria-label="Conteúdo">
+    <span class="mob-tab-icon">✏</span>
+    <span>Copy</span>
+  </button>
+  <div class="mob-tab-sep"></div>
+  <button class="mob-tab" id="tabWf" onclick="switchTab('wf')" aria-label="Wireframe">
+    <span class="mob-tab-icon">▦</span>
+    <span>Wireframe</span>
+  </button>
+</nav>
+
+<script>
+  const copyPane    = document.getElementById('copyPane');
+  const wfPane      = document.getElementById('wfPane');
+  const activeLabel = document.getElementById('topActiveLabel');
+  const PANE_HDR_H  = 38;
+
+  const SECTION_NAMES = {
+    s1:'S1 · Hero', s2:'S2 · Frase de Impacto', s3:'S3 · Sobre a Marca',
+    s4:'S4 · Produtos', s5:'S5 · Personalização', s6:'S6 · Para Quem É',
+    s7:'S7 · Como Funciona', s8:'S8 · Diferenciais', s9:'S9 · Chamada Emocional',
+    s10:'S10 · FAQ', s11:'S11 · CTA Final'
+  };
+
+  let current = null;
+
+  function activate(id) {
+    if (current === id) return;
+    current = id;
+
+    document.querySelectorAll('.copy-section').forEach(el =>
+      el.classList.toggle('active', el.dataset.section === id));
+    document.querySelectorAll('.wf-block').forEach(el =>
+      el.classList.toggle('active', el.dataset.wf === id));
+    document.querySelectorAll('.wf-pip').forEach(el =>
+      el.classList.toggle('active', el.dataset.pip === id));
+
+    activeLabel.textContent = SECTION_NAMES[id] || id;
+
+    const block = document.getElementById('wf-' + id);
+    if (!block) return;
+    const paneRect  = wfPane.getBoundingClientRect();
+    const blockRect = block.getBoundingClientRect();
+    const target    = wfPane.scrollTop + (blockRect.top - paneRect.top)
+                      - (paneRect.height / 2) + (blockRect.height / 2);
+    wfPane.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+  }
+
+  function updateActiveSection() {
+    const paneRect = copyPane.getBoundingClientRect();
+    const refY     = paneRect.top + PANE_HDR_H + 4;
+    const sections = Array.from(document.querySelectorAll('.copy-section[data-section]'));
+    let active = sections[0];
+    for (const s of sections) {
+      if (s.getBoundingClientRect().top <= refY) { active = s; } else { break; }
+    }
+    if (active) activate(active.dataset.section);
+  }
+
+  let scrollTimer = null;
+  copyPane.addEventListener('scroll', () => {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(updateActiveSection, 60);
+  });
+
+  updateActiveSection();
+
+  /* ── Mobile tabs ── */
+  function switchTab(tab) {
+    const isCopy = tab === 'copy';
+    copyPane.classList.toggle('tab-active', isCopy);
+    wfPane.classList.toggle('tab-active', !isCopy);
+    document.getElementById('tabCopy').classList.toggle('active', isCopy);
+    document.getElementById('tabWf').classList.toggle('active', !isCopy);
+
+    // ao mostrar o wireframe, re-centraliza o bloco ativo
+    if (!isCopy && current) {
+      setTimeout(() => {
+        const block = document.getElementById('wf-' + current);
+        if (!block) return;
+        const paneRect  = wfPane.getBoundingClientRect();
+        const blockRect = block.getBoundingClientRect();
+        const target    = wfPane.scrollTop + (blockRect.top - paneRect.top)
+                          - (paneRect.height / 2) + (blockRect.height / 2);
+        wfPane.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      }, 50);
+    }
+  }
+</script>
+</body>
+</html>
