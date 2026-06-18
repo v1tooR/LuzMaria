@@ -1,0 +1,20 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Radii & Shadows" subtitle="Restrained corners, warm low shadows, candle glow" -->
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; background: var(--ink-900); padding: 24px 28px; font-family: var(--font-ui); }
+  .row { display: flex; gap: 22px; flex-wrap: wrap; }
+  .item { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .box { width: 92px; height: 64px; background: var(--surface-card); border: 1px solid var(--border-card); }
+  .t { font-size: 11px; color: var(--ivory-500); font-family: monospace; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="item"><div class="box" style="border-radius:var(--radius-sm)"></div><div class="t">radius-sm · 3</div></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md)"></div><div class="t">radius-md · 5</div></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-lg)"></div><div class="t">radius-lg · 8</div></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md); box-shadow:var(--shadow-md)"></div><div class="t">shadow-md</div></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md); box-shadow:var(--glow-candle); border-color:var(--gold-500)"></div><div class="t">glow-candle</div></div>
+  </div>
+</body></html>

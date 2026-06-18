@@ -3,937 +3,2453 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Design Brief — Luz Maria Artesanal</title>
+  <title>LuzMaria Artesanal — Velas devocionais feitas à mão</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Pinyon+Script&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    /* ================================================================
+       DESIGN TOKENS — White/Ivory Theme (LuzMaria Artesanal)
+    ================================================================ */
     :root {
-      --accent:        #2563eb;
-      --accent-light:  #eff6ff;
-      --accent-ring:   rgba(37, 99, 235, 0.18);
-      --accent-dark:   #1d4ed8;
-      --gray-50:  #fafafa;
-      --gray-100: #f4f4f5;
-      --gray-200: #e4e4e7;
-      --gray-300: #d1d5db;
-      --gray-400: #9ca3af;
-      --gray-500: #6b7280;
-      --gray-600: #4b5563;
-      --gray-700: #374151;
-      --gray-800: #1f2937;
-      --gray-900: #111827;
-      --wf-dash:  1.5px dashed #bbb;
-      --topbar-h: 44px;
-      --tabs-h:   0px; /* sobrescrito em mobile */
-      --pane-hdr: 38px;
+      /* Fonts */
+      --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      --font-body:    'EB Garamond', Georgia, serif;
+      --font-ui:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-script:  'Pinyon Script', cursive;
+
+      /* Type scale */
+      --text-xs:   11px;
+      --text-sm:   14px;
+      --text-md:   17px;
+      --text-lg:   20px;
+      --text-xl:   24px;
+      --text-2xl:  32px;
+      --text-3xl:  42px;
+      --text-4xl:  56px;
+      --text-5xl:  76px;
+
+      /* Spacing (4px base) */
+      --sp-1:  4px;  --sp-2:  8px;  --sp-3:  12px; --sp-4:  16px;
+      --sp-5:  24px; --sp-6:  32px; --sp-7:  48px;
+      --sp-8:  64px; --sp-9:  96px;
+      --section-y: 100px;
+      --container-max: 1180px;
+      --container-pad: clamp(20px, 5vw, 40px);
+
+      /* Radii */
+      --r-sm: 3px; --r-md: 6px; --r-pill: 999px;
+
+      /* Raw palette */
+      --ink-900: #0E0D0C;
+      --ink-800: #1A1715;
+      --ink-700: #221E1B;
+      --ink-600: #3A342E;
+      --ink-500: #6B5E52;
+      --ink-400: #9A8E82;
+      --gold-300: #EAD88A;
+      --gold-400: #D4B24A;
+      --gold-500: #C9A227;
+      --gold-600: #B08505;
+      --gold-700: #8A6604;
+      --wine-500: #7A2A2C;
+      --wine-700: #5C1A1B;
+      --ivory-100: #F4EEE0;
+      --ivory-200: #F2EAD8;
+      --ivory-300: #EDE4D3;
+      --ivory-400: #DDD0BB;
+
+      /* Semantic — white theme */
+      --surface-page:      #FFFFFF;
+      --surface-alt:       #FAF7F0;
+      --surface-parchment: #F5EFE4;
+
+      --text-strong:  var(--ink-800);
+      --text-body:    var(--ink-600);
+      --text-muted:   var(--ink-500);
+      --text-faint:   var(--ink-400);
+      --text-accent:  var(--gold-600);
+
+      --border-warm:  rgba(160, 110, 8, 0.20);
+      --border-card:  rgba(160, 110, 8, 0.13);
+      --border-muted: rgba(160, 110, 8, 0.08);
+
+      /* Shadows */
+      --shadow-xs: 0 1px 3px rgba(80, 52, 6, 0.06);
+      --shadow-sm: 0 2px 8px rgba(80, 52, 6, 0.07);
+      --shadow-md: 0 6px 24px rgba(80, 52, 6, 0.09);
+      --shadow-lg: 0 16px 48px rgba(80, 52, 6, 0.11);
+      --glow-gold: 0 0 36px rgba(201, 162, 39, 0.14), 0 0 8px rgba(201, 162, 39, 0.09);
+
+      /* Motion */
+      --ease-out:  cubic-bezier(0.22, 0.61, 0.36, 1);
+      --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+      --dur-fast:  150ms;
+      --dur-base:  260ms;
+      --dur-slow:  500ms;
     }
 
-    html, body { height: 100%; overflow: hidden; }
-
+    /* ================================================================
+       RESET & BASE
+    ================================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: #fff;
-      color: var(--gray-900);
-      font-size: 16px;
-      line-height: 1.55;
+      background: var(--surface-page);
+      color: var(--text-body);
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      line-height: 1.72;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
 
-    /* ─── TOP BAR ─────────────────────────────── */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: var(--topbar-h);
-      background: var(--gray-900);
-      color: #fff;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 20px; z-index: 200;
-      font-size: 12px; letter-spacing: 0.06em;
-      border-bottom: 2px solid var(--gray-800);
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--container-pad);
     }
-    .topbar-left  { display: flex; align-items: center; gap: 12px; }
-    .topbar-brand { font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; font-size: 13px; }
-    .topbar-sep   { width: 1px; height: 16px; background: var(--gray-700); }
-    .topbar-doc   { color: var(--gray-400); }
+    .section             { padding: var(--section-y) 0; }
+    .section-alt         { background: var(--surface-alt); }
+    .section-parchment   { background: var(--surface-parchment); }
 
-    .topbar-active {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(37,99,235,0.25);
-      border: 1px solid rgba(37,99,235,0.4);
-      padding: 3px 12px; border-radius: 2px;
-      font-size: 12px; color: #93c5fd;
-    }
-    .topbar-active .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #60a5fa;
-      animation: blink 1.8s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.3; }
-    }
-    .topbar-right { color: var(--gray-500); font-size: 12px; }
-
-    /* ─── LAYOUT ──────────────────────────────── */
-    .layout {
-      display: flex;
-      height: 100vh;
-      padding-top: var(--topbar-h);
-    }
-
-    /* ─── COPY PANE (LEFT) ────────────────────── */
-    .copy-pane {
-      flex: 0 0 44%;
-      overflow-y: scroll;
-      height: 100%;
-      border-right: 2px solid var(--gray-200);
-      scroll-snap-type: y mandatory;
-      scroll-padding-top: var(--pane-hdr);
-    }
-
-    .pane-header {
-      position: sticky; top: 0; z-index: 10;
-      height: var(--pane-hdr);
-      padding: 0 20px;
-      background: var(--gray-50);
-      border-bottom: 1px solid var(--gray-200);
-      font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--gray-500);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .pane-header .chip {
+    /* ================================================================
+       TYPOGRAPHY UTILITIES
+    ================================================================ */
+    .eyebrow {
       display: inline-block;
-      background: var(--gray-200); color: var(--gray-600);
-      padding: 2px 8px; font-size: 11px; border-radius: 2px;
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--text-accent);
+      margin-bottom: 14px;
+    }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--text-strong);
+      line-height: 1.08;
+      letter-spacing: -0.015em;
     }
 
-    /* ─── COPY SECTIONS ───────────────────────── */
-    .copy-section {
-      scroll-snap-align: start;
-      min-height: calc(100vh - var(--topbar-h) - var(--pane-hdr) - var(--tabs-h));
-      padding: 32px 28px 40px;
-      border-bottom: 1px solid var(--gray-100);
-      border-left: 4px solid transparent;
-      display: flex; flex-direction: column; justify-content: flex-start;
-      transition: background 0.25s ease, border-color 0.25s ease;
+    /* ================================================================
+       ORNAMENTAL
+    ================================================================ */
+    .filete {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--gold-600) 20%, var(--gold-400) 50%, var(--gold-600) 80%, transparent 100%);
+      opacity: 0.35;
+      margin: 0;
     }
-    .copy-section.active {
-      background: var(--accent-light);
-      border-left-color: var(--accent);
+    .filete-node {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: var(--sp-5) 0;
     }
-
-    .cs-tag {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: var(--gray-200); color: var(--gray-600);
-      font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      padding: 3px 10px; margin-bottom: 14px;
-      transition: background 0.25s, color 0.25s;
+    .filete-node::before,
+    .filete-node::after {
+      content: '';
+      height: 1px;
+      width: 72px;
+      background: linear-gradient(90deg, transparent, var(--gold-500));
     }
-    .copy-section.active .cs-tag { background: var(--accent); color: #fff; }
-
-    .copy-section h2 {
-      font-size: 20px; font-weight: 700; line-height: 1.3;
-      color: var(--gray-900); margin-bottom: 12px;
+    .filete-node::after { transform: scaleX(-1); }
+    .filete-diamond {
+      width: 9px;
+      height: 9px;
+      background: var(--gold-500);
+      transform: rotate(45deg);
+      flex-shrink: 0;
     }
-    .copy-section p {
-      font-size: 15px; color: var(--gray-600);
-      line-height: 1.7; margin-bottom: 8px;
+    .ornate {
+      position: relative;
+      padding: var(--sp-7);
     }
-    .copy-section ul {
-      margin: 10px 0 0 20px; color: var(--gray-600);
-      font-size: 15px; line-height: 2;
-    }
-
-    .cs-cta {
-      display: inline-block; margin-top: 16px;
-      background: var(--gray-900); color: #fff;
-      font-size: 13px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      padding: 10px 20px;
-    }
-
-    .cs-wh {
-      margin-top: 8px; padding: 9px 13px;
-      background: #f0fdf4; border-left: 2px solid #86efac;
-      font-size: 13px; color: var(--gray-500);
-      font-style: italic; line-height: 1.5;
+    .ornate::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--border-warm);
+      border-radius: var(--r-sm);
+      pointer-events: none;
     }
 
-    .cs-product-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; margin-top: 16px;
+    /* ================================================================
+       NAV
+    ================================================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background var(--dur-base) var(--ease-soft),
+                  border-color var(--dur-base) var(--ease-soft),
+                  box-shadow var(--dur-base) var(--ease-soft);
     }
-    .cs-product { border: 1px solid var(--gray-200); padding: 14px; background: #fff; }
-    .cs-product h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: var(--gray-800); }
-    .cs-product p  { font-size: 13px; margin-bottom: 8px; }
-
-    .cs-steps { margin-top: 12px; counter-reset: step; }
-    .cs-step {
-      counter-increment: step;
-      display: flex; align-items: center; gap: 12px;
-      padding: 9px 0; border-bottom: 1px dashed var(--gray-200);
-      font-size: 15px; color: var(--gray-600);
+    .nav.scrolled {
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--border-muted);
+      box-shadow: var(--shadow-sm);
     }
-    .cs-step::before {
-      content: counter(step);
-      min-width: 26px; height: 26px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--gray-200); border-radius: 50%;
-      font-size: 12px; font-weight: 700; color: var(--gray-700);
+    .nav-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 14px var(--container-pad);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-5);
     }
-
-    .cs-diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-    .cs-diff {
-      border: 1px solid var(--gray-200); padding: 11px;
-      background: var(--gray-50); font-size: 14px; color: var(--gray-600);
+    .nav-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .nav-wordmark-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 26px;
+      color: var(--text-strong);
+      letter-spacing: 0.01em;
     }
-    .cs-diff strong { display: block; color: var(--gray-900); margin-bottom: 3px; font-size: 14px; }
+    .nav-wordmark-name em { font-style: italic; color: var(--gold-600); }
+    .nav-wordmark-sub {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.38em;
+      color: var(--text-faint);
+      margin-top: 3px;
+    }
+    .nav-links { display: flex; align-items: center; gap: var(--sp-6); }
+    .nav-link {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-body);
+      letter-spacing: 0.02em;
+      transition: color var(--dur-fast);
+    }
+    .nav-link:hover { color: var(--text-strong); }
 
-    .cs-faq-item { padding: 11px 0; border-bottom: 1px dashed var(--gray-200); }
-    .cs-faq-item strong { font-size: 15px; color: var(--gray-800); display: block; margin-bottom: 4px; }
-    .cs-faq-item p { margin: 0; font-size: 14px; }
+    /* ================================================================
+       BUTTONS
+    ================================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      line-height: 1;
+      border: 1.5px solid transparent;
+      border-radius: var(--r-md);
+      white-space: nowrap;
+      transition: background var(--dur-base) var(--ease-soft),
+                  color var(--dur-base) var(--ease-soft),
+                  border-color var(--dur-base) var(--ease-soft),
+                  box-shadow var(--dur-base) var(--ease-soft),
+                  transform var(--dur-fast) var(--ease-out);
+      -webkit-font-smoothing: antialiased;
+    }
+    .btn:active { transform: translateY(1px) !important; }
+    .btn-sm { padding: 10px 20px; }
+    .btn-md { padding: 14px 28px; }
+    .btn-lg { padding: 17px 38px; font-size: 13px; }
+    .btn-full { width: 100%; }
 
-    /* ─── WIREFRAME PANE (RIGHT) ──────────────── */
-    .wf-pane {
-      flex: 1;
-      overflow-y: auto;
+    .btn-primary {
+      background: linear-gradient(90deg, var(--gold-500) 0%, var(--gold-400) 50%, var(--gold-500) 100%);
+      background-size: 200% 100%;
+      background-position: 100% 0;
+      color: var(--ink-900);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary:hover {
+      background-position: 0% 0;
+      transform: translateY(-1px);
+      box-shadow: var(--glow-gold);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold-600);
+      border-color: var(--gold-500);
+    }
+    .btn-outline:hover {
+      background: rgba(201, 162, 39, 0.07);
+      transform: translateY(-1px);
+    }
+    .btn-dark { background: var(--gold-500); color: var(--ink-900); }
+    .btn-dark:hover {
+      background: var(--gold-400);
+      transform: translateY(-1px);
+      box-shadow: 0 0 40px rgba(201, 162, 39, 0.30);
+    }
+    .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+    /* ================================================================
+       HERO
+    ================================================================ */
+    .hero {
+      padding: 108px 0 88px;
+      min-height: 90vh;
+      background: var(--surface-page);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hero > .container { width: 100%; }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 100% at 82% 18%, rgba(201,162,39,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '✦';
+      position: absolute;
+      top: 50px;
+      right: calc(var(--container-pad) + 20px);
+      font-size: 220px;
+      color: var(--gold-500);
+      opacity: 0.022;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-9);
+      align-items: center;
+    }
+    .hero-title {
+      font-size: clamp(40px, 5.5vw, 68px);
+      font-weight: 500;
+      color: var(--text-strong);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      margin: 0 0 var(--sp-5);
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      line-height: 1.72;
+      color: var(--text-body);
+      max-width: 46ch;
+      margin-bottom: var(--sp-7);
+    }
+    .hero-cta-row {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-5);
+      flex-wrap: wrap;
+    }
+    .hero-script {
+      font-family: var(--font-script);
+      font-size: 32px;
+      color: var(--gold-600);
+      line-height: 1;
+    }
+    .hero-media {
+      position: relative;
+      aspect-ratio: 3/4;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-card);
+      background: var(--ivory-100);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .hero-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 42% at 97% 4%, rgba(255,253,248,0.95) 0%, transparent 52%),
+        linear-gradient(to top, rgba(255,253,248,0.90) 0%, transparent 14%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-media img {
+      width: 100%;
       height: 100%;
-      background: var(--gray-50);
-      font-family: 'Courier New', Courier, monospace;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.7s var(--ease-soft);
     }
-    .wf-pane .pane-header { background: var(--gray-100); }
-
-    .wf-progress {
-      position: sticky; top: var(--pane-hdr); z-index: 9;
-      background: var(--gray-100);
-      border-bottom: 1px solid var(--gray-200);
-      padding: 7px 16px;
-      display: flex; gap: 5px; align-items: center; flex-wrap: wrap;
-    }
-    .wf-progress-label { font-size: 10px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 4px; }
-    .wf-pip {
-      width: 28px; height: 6px;
-      background: var(--gray-300); border-radius: 1px;
-      transition: background 0.25s ease, width 0.25s ease;
-    }
-    .wf-pip.active { background: var(--accent); width: 44px; }
-
-    .wf-nav-placeholder {
-      margin: 10px 14px 4px;
-      border: var(--wf-dash); padding: 7px 12px;
-      background: #fff;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .wf-nav-logo-box { border: var(--wf-dash); padding: 3px 10px; font-size: 9px; color: var(--gray-400); }
-    .wf-nav-links { display: flex; gap: 10px; }
-    .wf-nav-lnk { height: 6px; width: 28px; background: var(--gray-200); border-radius: 1px; }
-    .wf-nav-btn  { border: 1.5px solid var(--gray-400); padding: 3px 8px; font-size: 8px; color: var(--gray-400); }
-    .wf-nav-tag  { font-size: 10px; color: var(--gray-400); margin-bottom: 4px; letter-spacing: 0.05em; }
-
-    .wf-block {
-      margin: 8px 14px;
-      border: 2px solid var(--gray-200);
-      background: #fff;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
-    .wf-block.active {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-ring), 0 4px 20px rgba(37,99,235,0.10);
+    .hero-media:hover img { transform: scale(1.03); }
+    .media-label {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--text-faint);
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(255,255,255,0.7);
+      padding: 3px 10px;
+      border-radius: 99px;
     }
 
-    .wf-label {
-      padding: 7px 12px;
-      background: var(--gray-100);
-      border-bottom: 1px solid var(--gray-200);
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      color: var(--gray-500);
-      transition: background 0.25s, color 0.25s, border-color 0.25s;
-    }
-    .wf-block.active .wf-label {
-      background: var(--accent);
-      border-bottom-color: var(--accent-dark);
-      color: #fff;
-    }
-    .wf-indicator {
-      display: none;
-      font-size: 9px; font-weight: 700;
-      background: rgba(255,255,255,0.22);
-      padding: 1px 6px; border-radius: 2px;
-      letter-spacing: 0.04em; text-transform: uppercase;
-    }
-    .wf-block.active .wf-indicator { display: inline-block; }
-    .wf-body { padding: 12px; }
+    /* ================================================================
+       HERO ENHANCEMENTS
+    ================================================================ */
+    .hero-eyebrow-ornament { color: var(--gold-500); margin-right: 2px; }
 
-    /* WF primitives */
-    .ph {
-      border: var(--wf-dash); background: var(--gray-100);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--gray-400); font-size: 9px;
-      text-transform: uppercase; letter-spacing: 0.06em;
-    }
-    .tl { height: 8px; background: var(--gray-200); border-radius: 2px; margin-bottom: 5px; }
-    .tl.w100{width:100%} .tl.w85{width:85%} .tl.w70{width:70%}
-    .tl.w55{width:55%}   .tl.w40{width:40%}
-    .tl.title    { height: 13px; background: var(--gray-300); margin-bottom: 8px; }
-    .tl.subtitle { height: 10px; background: var(--gray-300); margin-bottom: 8px; }
-
-    .wf-btn {
-      border: 2px solid var(--gray-800); padding: 5px 12px;
-      font-size: 8px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      display: inline-block; color: var(--gray-800);
-    }
-    .wf-btn.sm {
-      border-color: var(--gray-400); color: var(--gray-500);
-      font-size: 8px; padding: 3px 8px; display: block;
-      text-align: center; margin-top: 6px; border-width: 1.5px;
-    }
-    .wf-btn.inv { border-color: #fff; color: #fff; }
-
-    .g2  { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .g3  { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-    .c2  { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: start; }
-    .c2r { display: grid; grid-template-columns: 1fr 130px; gap: 12px; align-items: start; }
-
-    .wf-card { border: var(--wf-dash); padding: 8px; background: #fff; }
-
-    .wf-step-row { display: flex; }
-    .wf-step {
-      flex: 1; border: var(--wf-dash); border-right: none;
-      padding: 7px 4px; text-align: center;
-      font-size: 8px; color: var(--gray-500); background: #fff;
-    }
-    .wf-step:last-child { border-right: var(--wf-dash); }
-    .wf-step-n {
-      width: 18px; height: 18px; border: 1.5px solid var(--gray-400);
-      border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-size: 8px; font-weight: 700;
-      color: var(--gray-600); margin: 0 auto 5px; background: var(--gray-100);
-    }
-    .wf-faq {
-      border: var(--wf-dash); margin-bottom: 4px; padding: 6px 10px;
-      background: #fff; display: flex; justify-content: space-between;
-      font-size: 9px; color: var(--gray-500);
-    }
-    .wf-dark .wf-body { background: #1a1a1a; }
-    .wf-dark .tl { background: #444; }
-    .wf-dark .tl.title { background: #555; }
-    .wf-footer {
-      margin: 6px 14px 16px;
-      border: var(--wf-dash); padding: 10px; background: var(--gray-100);
+    /* Image wrap + ambient glow */
+    .hero-media-wrap { position: relative; }
+    .hero-media-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -30px -10px;
+      background: radial-gradient(ellipse 80% 72% at 50% 50%, rgba(201,162,39,0.10), transparent 66%);
+      pointer-events: none;
     }
 
-    /* ─── MOBILE TABS ─────────────────────────── */
-    .mobile-tabs { display: none; }
+    /* Gold corner frame */
+    .hero-corner-tr, .hero-corner-bl {
+      position: absolute;
+      width: 50px; height: 50px;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.60;
+    }
+    .hero-corner-tr {
+      top: -9px; right: -9px;
+      border-top: 1.5px solid var(--gold-500);
+      border-right: 1.5px solid var(--gold-500);
+      border-radius: 0 var(--r-md) 0 0;
+    }
+    .hero-corner-bl {
+      bottom: -9px; left: -9px;
+      border-bottom: 1.5px solid var(--gold-500);
+      border-left: 1.5px solid var(--gold-500);
+      border-radius: 0 0 0 var(--r-md);
+    }
 
-    @media (max-width: 768px) {
-      :root {
-        --tabs-h: 56px;
+    /* Floating badge on image */
+    .hero-img-badge {
+      position: absolute;
+      bottom: 24px; left: 20px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 162, 39, 0.28);
+      border-radius: var(--r-pill);
+      padding: 8px 16px 8px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(80, 52, 6, 0.10);
+    }
+    .hero-img-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-500);
+      flex-shrink: 0;
+      animation: badge-pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.55); }
+      50%       { box-shadow: 0 0 0 6px rgba(201, 162, 39, 0); }
+    }
+    .hero-img-badge-text {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-strong);
+    }
+
+    /* Social proof strip */
+    .hero-proof {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-5);
+      margin-top: var(--sp-6);
+      padding-top: var(--sp-5);
+      border-top: 1px solid var(--border-muted);
+    }
+    .hero-proof-item { flex-shrink: 0; }
+    .hero-proof-num {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-strong);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .hero-proof-accent { color: var(--gold-600); }
+    .hero-proof-label {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+    .hero-proof-sep {
+      display: block;
+      width: 1px; height: 34px;
+      background: var(--border-muted);
+      flex-shrink: 0;
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 26px; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      opacity: 0;
+      animation: scroll-cue-in 0.6s ease 1.8s forwards;
+      pointer-events: none;
+    }
+    @keyframes scroll-cue-in { to { opacity: 1; } }
+    .hero-scroll-label {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      color: var(--text-faint);
+    }
+    .hero-scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold-500), transparent);
+      transform-origin: top;
+      animation: scroll-line-anim 2.2s ease-in-out 1.8s infinite;
+    }
+    @keyframes scroll-line-anim {
+      0%  { transform: scaleY(0); opacity: 1; }
+      65% { transform: scaleY(1); opacity: 1; }
+      100%{ transform: scaleY(1); opacity: 0; }
+    }
+
+    /* ================================================================
+       IMPACT QUOTE BAND
+    ================================================================ */
+    #impacto {
+      position: relative;
+      overflow: hidden;
+    }
+    /* Giant background quote mark */
+    #impacto::before {
+      content: '\201C';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 440px;
+      color: var(--gold-600);
+      opacity: 0.036;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    /* Ambient candle-glow centre */
+    #impacto::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 72% 88% at 50% 44%, rgba(201,162,39,0.08), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .impact-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    /* Top ornamental rule */
+    .impact-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: var(--sp-7);
+    }
+    .impact-rule::before,
+    .impact-rule::after {
+      content: '';
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-500));
+      opacity: 0.45;
+    }
+    .impact-rule::after { transform: scaleX(-1); }
+    .impact-rule-stars {
+      font-size: 12px;
+      color: var(--gold-500);
+      opacity: 0.65;
+      letter-spacing: 0.32em;
+    }
+    /* Quote */
+    .impact-quote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(24px, 3.4vw, 42px);
+      line-height: 1.42;
+      color: var(--text-strong);
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    /* Script attribution */
+    .impact-attr {
+      display: block;
+      font-family: var(--font-script);
+      font-size: 30px;
+      color: var(--gold-600);
+      line-height: 1;
+      margin: var(--sp-5) auto var(--sp-6);
+    }
+    /* Middle divider */
+    .impact-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: var(--sp-5);
+    }
+    .impact-divider::before,
+    .impact-divider::after {
+      content: '';
+      width: 56px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-500));
+      opacity: 0.32;
+    }
+    .impact-divider::after { transform: scaleX(-1); }
+    .impact-divider-diamond {
+      width: 7px; height: 7px;
+      background: var(--gold-500);
+      transform: rotate(45deg);
+      opacity: 0.50;
+      flex-shrink: 0;
+    }
+    .impact-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 52ch;
+      margin: 0 auto;
+      line-height: 1.72;
+    }
+    /* Side ornamental lines (decorative, desktop only) */
+    .impact-orn-side {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .impact-orn-side-left  { left: clamp(12px, 3vw, 44px); }
+    .impact-orn-side-right { right: clamp(12px, 3vw, 44px); }
+    .impact-orn-side-line {
+      width: 1px; height: 64px;
+      background: linear-gradient(to bottom, transparent, var(--gold-500) 50%, transparent);
+      opacity: 0.28;
+    }
+    .impact-orn-side-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold-500);
+      opacity: 0.30;
+    }
+    @media (max-width: 1100px) {
+      .impact-orn-side { display: none; }
+    }
+
+    /* ================================================================
+       BRAND STORY
+    ================================================================ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-8);
+      align-items: center;
+    }
+
+    /* Image wrap + ambient glow */
+    .about-media-wrap { position: relative; }
+    .about-media-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -30px -10px;
+      background: radial-gradient(ellipse 80% 72% at 50% 50%, rgba(201,162,39,0.09), transparent 66%);
+      pointer-events: none;
+    }
+
+    /* Gold corners — top-left + bottom-right (counterpoint to hero's TR/BL) */
+    .about-corner-tl, .about-corner-br {
+      position: absolute;
+      width: 50px; height: 50px;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.55;
+    }
+    .about-corner-tl {
+      top: -9px; left: -9px;
+      border-top: 1.5px solid var(--gold-500);
+      border-left: 1.5px solid var(--gold-500);
+      border-radius: var(--r-md) 0 0 0;
+    }
+    .about-corner-br {
+      bottom: -9px; right: -9px;
+      border-bottom: 1.5px solid var(--gold-500);
+      border-right: 1.5px solid var(--gold-500);
+      border-radius: 0 0 var(--r-md) 0;
+    }
+
+    .about-media {
+      aspect-ratio: 4/5;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-card);
+      background: var(--ivory-100);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .about-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.7s var(--ease-soft);
+    }
+    .about-media:hover img { transform: scale(1.03); }
+
+    /* Floating badge on about image */
+    .about-img-badge {
+      position: absolute;
+      bottom: 24px; right: 20px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 162, 39, 0.28);
+      border-radius: var(--r-pill);
+      padding: 8px 16px 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(80, 52, 6, 0.10);
+    }
+    .about-img-badge-icon {
+      font-size: 13px;
+      color: var(--gold-500);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .about-img-badge-text {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-strong);
+    }
+
+    /* About story content */
+    .about-story { position: relative; }
+    .about-story::before {
+      content: '\201C';
+      position: absolute;
+      top: 20px; left: -6px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 200px;
+      color: var(--gold-500);
+      opacity: 0.05;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+    .about-story-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Gold accent bar before quote */
+    .about-quote-accent {
+      display: block;
+      width: 30px; height: 2px;
+      background: var(--gold-500);
+      border-radius: 1px;
+      margin-bottom: var(--sp-4);
+    }
+
+    .about-quote {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(20px, 2.6vw, 26px);
+      line-height: 1.45;
+      color: var(--text-strong);
+      margin-bottom: var(--sp-5);
+    }
+    .about-text { font-size: 17px; line-height: 1.72; color: var(--text-body); }
+    .about-text + .about-text { margin-top: var(--sp-4); }
+    .script-sig {
+      display: block;
+      font-family: var(--font-script);
+      font-size: 34px;
+      color: var(--gold-600);
+      line-height: 1;
+      margin-top: var(--sp-5);
+    }
+
+    /* Craft attributes row */
+    .about-craft-line {
+      margin-top: var(--sp-6);
+      padding-top: var(--sp-5);
+      border-top: 1px solid var(--border-muted);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      line-height: 2;
+    }
+    .about-craft-sep {
+      color: var(--gold-500);
+      opacity: 0.55;
+      margin: 0 6px;
+    }
+
+    /* ================================================================
+       SHARED SECTION HEAD
+    ================================================================ */
+    .section-head { text-align: center; margin-bottom: var(--sp-7); }
+    .section-head h2 { margin-top: var(--sp-3); }
+    .section-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 52ch;
+      margin: var(--sp-3) auto 0;
+    }
+
+    /* ================================================================
+       PRODUCTS SLIDER
+    ================================================================ */
+    .products-slider {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+    }
+    .slider-viewport {
+      overflow: hidden;
+      flex: 1;
+      min-width: 0;
+    }
+    .slider-track {
+      display: flex;
+      gap: var(--sp-5);
+      transition: transform 0.48s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform;
+    }
+    .slider-btn {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--border-warm);
+      background: #FFFFFF;
+      color: var(--gold-600);
+      font-size: 18px;
+      line-height: 1;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--dur-base) var(--ease-soft),
+                  border-color var(--dur-base) var(--ease-soft),
+                  box-shadow var(--dur-base) var(--ease-soft);
+    }
+    .slider-btn:hover:not(:disabled) {
+      background: var(--gold-500);
+      color: var(--ink-900);
+      border-color: var(--gold-500);
+      box-shadow: var(--shadow-sm);
+    }
+    .slider-btn:disabled {
+      opacity: 0.28;
+      cursor: default;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      margin-top: var(--sp-5);
+    }
+    .slider-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--border-card);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background var(--dur-base), transform var(--dur-base);
+    }
+    .slider-dot.active {
+      background: var(--gold-500);
+      transform: scale(1.4);
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+      transition: border-color var(--dur-base) var(--ease-soft),
+                  box-shadow var(--dur-base) var(--ease-soft),
+                  transform var(--dur-base) var(--ease-out);
+    }
+    .card:hover {
+      border-color: var(--gold-500);
+      box-shadow: var(--shadow-md), var(--glow-gold);
+      transform: translateY(-3px);
+    }
+    .card-photo {
+      position: relative;
+      aspect-ratio: 4/5;
+      background: var(--ivory-100);
+      overflow: hidden;
+    }
+    .card-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.5s var(--ease-soft);
+    }
+    .card:hover .card-photo img {
+      transform: scale(1.04);
+    }
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-900);
+      background: var(--gold-500);
+      padding: 4px 11px;
+      border-radius: var(--r-pill);
+    }
+    .card-body {
+      padding: var(--sp-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      flex: 1;
+    }
+    .card-name {
+      font-family: var(--font-display);
+      font-size: 21px;
+      font-weight: 600;
+      color: var(--text-strong);
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+    }
+    .card-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card-cta { margin-top: var(--sp-3); }
+
+    /* ================================================================
+       PERSONALIZATION
+    ================================================================ */
+    .personal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-8);
+      align-items: center;
+    }
+
+    /* Image wrap + ambient glow */
+    .personal-media-wrap { position: relative; }
+    .personal-media-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -30px -10px;
+      background: radial-gradient(ellipse 80% 72% at 50% 50%, rgba(201,162,39,0.10), transparent 66%);
+      pointer-events: none;
+    }
+
+    /* Gold corners — TR/BL (image on right side) */
+    .personal-corner-tr, .personal-corner-bl {
+      position: absolute;
+      width: 50px; height: 50px;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.55;
+    }
+    .personal-corner-tr {
+      top: -9px; right: -9px;
+      border-top: 1.5px solid var(--gold-500);
+      border-right: 1.5px solid var(--gold-500);
+      border-radius: 0 var(--r-md) 0 0;
+    }
+    .personal-corner-bl {
+      bottom: -9px; left: -9px;
+      border-bottom: 1.5px solid var(--gold-500);
+      border-left: 1.5px solid var(--gold-500);
+      border-radius: 0 0 0 var(--r-md);
+    }
+
+    .personal-media {
+      aspect-ratio: 4/5;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-card);
+      background: var(--ivory-100);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .personal-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.7s var(--ease-soft);
+    }
+    .personal-media:hover img { transform: scale(1.03); }
+
+    /* Floating badge — top left, unique position */
+    .personal-img-badge {
+      position: absolute;
+      top: 24px; left: 20px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 162, 39, 0.28);
+      border-radius: var(--r-pill);
+      padding: 8px 16px 8px 11px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(80, 52, 6, 0.10);
+    }
+    .personal-img-badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-500);
+      flex-shrink: 0;
+      animation: badge-pulse 2.4s ease-in-out infinite;
+    }
+    .personal-img-badge-text {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-strong);
+    }
+
+    .personal-h2 {
+      font-size: clamp(26px, 3.5vw, 38px);
+      margin-bottom: var(--sp-4);
+    }
+    .personal-body { font-size: 17px; color: var(--text-body); line-height: 1.72; }
+    .personal-body + .personal-body { margin-top: var(--sp-3); }
+
+    /* Script accent under CTA */
+    .personal-script {
+      display: block;
+      font-family: var(--font-script);
+      font-size: 28px;
+      color: var(--gold-600);
+      line-height: 1;
+      margin-top: var(--sp-4);
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin: var(--sp-4) 0; }
+    .tag {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-accent);
+      background: rgba(160, 110, 8, 0.06);
+      border: 1px solid var(--border-warm);
+      padding: 5px 13px;
+      border-radius: var(--r-pill);
+      transition: background var(--dur-base) var(--ease-soft),
+                  border-color var(--dur-base) var(--ease-soft);
+    }
+    .tag:hover {
+      background: rgba(160, 110, 8, 0.11);
+      border-color: var(--gold-500);
+    }
+
+    /* ================================================================
+       AUDIENCE
+    ================================================================ */
+    .audience-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-4);
+      margin-top: var(--sp-7);
+    }
+    .audience-item {
+      text-align: center;
+      padding: var(--sp-6) var(--sp-5);
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-xs);
+      transition: box-shadow var(--dur-base) var(--ease-soft),
+                  transform var(--dur-base) var(--ease-out);
+    }
+    .audience-item:hover { box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+    .audience-ornament {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--gold-500);
+      margin-bottom: var(--sp-3);
+      line-height: 1;
+    }
+    .audience-label { font-size: 16px; color: var(--text-body); line-height: 1.45; }
+
+    /* ================================================================
+       HOW IT WORKS
+    ================================================================ */
+    .steps-wrap { margin-top: var(--sp-7); }
+
+    /* Desktop: grid with connector slots (1fr auto 1fr auto ...) */
+    .steps-list {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: start;
+    }
+
+    /* Arrow connector between steps */
+    .step-connector {
+      display: flex;
+      align-items: center;
+      padding-top: 44px; /* align to circle center */
+      padding-left: var(--sp-2);
+      padding-right: var(--sp-2);
+      color: var(--gold-400);
+      opacity: 0.40;
+    }
+    .step-connector svg { width: 18px; height: 18px; }
+
+    /* Individual step */
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 var(--sp-3);
+    }
+
+    /* Icon above circle */
+    .step-icon {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-500);
+      margin-bottom: var(--sp-3);
+      opacity: 0.75;
+    }
+    .step-icon svg { width: 20px; height: 20px; }
+
+    /* Numbered circle */
+    .step-circle {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold-500);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-xs), 0 0 0 5px rgba(201,162,39,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 22px; font-weight: 600;
+      color: var(--gold-600);
+      margin-bottom: var(--sp-4);
+      flex-shrink: 0;
+      position: relative;
+      transition: background var(--dur-base) var(--ease-soft),
+                  color var(--dur-base) var(--ease-soft),
+                  box-shadow var(--dur-base) var(--ease-soft),
+                  transform var(--dur-fast) var(--ease-out);
+    }
+    .step-item:hover .step-circle {
+      background: var(--gold-500);
+      color: var(--ink-900);
+      box-shadow: var(--shadow-md), var(--glow-gold);
+      transform: translateY(-3px);
+    }
+    /* WhatsApp step — highlighted by default */
+    .step-item--cta .step-circle {
+      background: var(--gold-500);
+      color: var(--ink-900);
+      box-shadow: var(--shadow-sm), var(--glow-gold);
+      border-color: var(--gold-400);
+    }
+    .step-item--cta:hover .step-circle {
+      background: var(--gold-400);
+      box-shadow: var(--shadow-md), var(--glow-gold);
+    }
+
+    .step-text-group { display: flex; flex-direction: column; align-items: center; }
+    .step-title {
+      font-family: var(--font-display);
+      font-size: 17px; font-weight: 600;
+      color: var(--text-strong);
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--sp-2);
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 130px;
+    }
+    .step-item--cta .step-title { color: var(--gold-700); }
+
+    /* Bottom note with decorative flanking lines */
+    .shipping-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-top: var(--sp-7);
+      padding-top: var(--sp-5);
+      border-top: 1px solid var(--border-muted);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      color: var(--text-faint);
+    }
+    .shipping-note-diamond {
+      width: 6px; height: 6px;
+      background: var(--gold-500);
+      transform: rotate(45deg);
+      opacity: 0.45;
+      flex-shrink: 0;
+    }
+
+    /* ─── Tablet (641–960px): 2-3 wrap grid ─── */
+    @media (min-width: 641px) and (max-width: 960px) {
+      .steps-list {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: var(--sp-5);
       }
+      .step-connector { display: none; }
+      .step-item { padding: var(--sp-5); }
+    }
 
-      .topbar-right,
-      .topbar-sep,
-      .topbar-doc { display: none; }
-
-      .topbar-active { font-size: 11px; padding: 3px 8px; }
-
-      .layout {
-        flex-direction: column;
-        padding-bottom: var(--tabs-h);
-      }
-
-      /* cada pane ocupa o espaço todo, alternado via JS */
-      .copy-pane,
-      .wf-pane {
-        flex: 0 0 100%;
-        width: 100%;
-        height: 100%;
-        border-right: none;
-        display: none;
-      }
-
-      .copy-pane.tab-active,
-      .wf-pane.tab-active {
-        display: block;
-      }
-
-      /* mobile: section height agora subtrai também o tabs-h */
-      .copy-section {
-        min-height: calc(100vh - var(--topbar-h) - var(--pane-hdr) - var(--tabs-h));
-      }
-
-      /* ── Tab bar ── */
-      .mobile-tabs {
+    /* ─── Mobile (<640px): vertical timeline ─── */
+    @media (max-width: 640px) {
+      .steps-list {
         display: flex;
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        height: var(--tabs-h);
-        background: var(--gray-900);
-        border-top: 2px solid var(--gray-700);
-        z-index: 300;
+        flex-direction: column;
+        gap: 0;
+        max-width: 380px;
+        margin: 0 auto;
       }
+      .step-connector { display: none; }
+      .step-item {
+        flex-direction: row;
+        text-align: left;
+        align-items: flex-start;
+        padding: 0;
+        gap: var(--sp-4);
+        padding-bottom: var(--sp-6);
+        position: relative;
+      }
+      /* Vertical connecting line */
+      .step-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        left: 25px;
+        top: 52px;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, rgba(201,162,39,0.35), transparent);
+        pointer-events: none;
+      }
+      .step-icon { display: none; }
+      .step-circle { flex-shrink: 0; margin-bottom: 0; }
+      .step-text-group { align-items: flex-start; padding-top: 12px; }
+      .step-desc { max-width: none; }
+    }
 
-      .mob-tab {
-        flex: 1;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        gap: 3px;
-        color: var(--gray-500);
-        font-size: 10px; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 0.1em;
-        cursor: pointer;
-        border-top: 3px solid transparent;
-        transition: color 0.2s ease, border-color 0.2s ease;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-      }
-      .mob-tab.active {
-        color: #fff;
-        border-top-color: var(--accent);
-      }
-      .mob-tab-icon {
-        font-size: 20px;
-        line-height: 1;
-      }
-      .mob-tab-sep {
-        width: 1px; align-self: stretch;
-        background: var(--gray-700);
-        margin: 10px 0;
-      }
+    /* ================================================================
+       DIFFERENTIALS
+    ================================================================ */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-4);
+      margin-top: var(--sp-7);
+    }
+    .diff-item {
+      padding: var(--sp-6) var(--sp-5);
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-xs);
+    }
+    .diff-gold-line {
+      display: block;
+      width: 28px;
+      height: 2px;
+      background: var(--gold-500);
+      border-radius: 1px;
+      margin-bottom: var(--sp-4);
+    }
+    .diff-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-strong);
+      margin-bottom: var(--sp-2);
+      line-height: 1.3;
+    }
+    .diff-desc { font-size: 14px; color: var(--text-muted); line-height: 1.62; }
 
-      /* wireframe pane on mobile: hide progress sticky offset issue */
-      .wf-progress { top: var(--pane-hdr); }
+    /* ================================================================
+       EMOTIONAL CTA
+    ================================================================ */
+    .emotional {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Ambient candle-glow background */
+    #fe::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 46%, rgba(201,162,39,0.055), transparent 65%);
+      pointer-events: none;
+    }
+    .emotional-inner { position: relative; z-index: 1; }
 
-      /* product grid: 1 col on small screens */
-      .cs-product-grid { grid-template-columns: 1fr; }
-      .cs-diff-grid    { grid-template-columns: 1fr; }
+    /* Header block */
+    .emotional-head { max-width: 640px; margin: 0 auto var(--sp-7); }
+    .emotional-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(28px, 4vw, 52px);
+      color: var(--text-strong);
+      line-height: 1.16;
+      letter-spacing: -0.02em;
+      margin: 0 auto;
+    }
+
+    /* Centered portrait image */
+    .emotional-img-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto var(--sp-8);
+    }
+    .emotional-img-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -32px -12px;
+      background: radial-gradient(ellipse 80% 72% at 50% 50%, rgba(201,162,39,0.10), transparent 66%);
+      pointer-events: none;
+    }
+
+    /* Gold corners — TL + BR (centered image) */
+    .emotional-corner-tl, .emotional-corner-br {
+      position: absolute;
+      width: 50px; height: 50px;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.55;
+    }
+    .emotional-corner-tl {
+      top: -9px; left: -9px;
+      border-top: 1.5px solid var(--gold-500);
+      border-left: 1.5px solid var(--gold-500);
+      border-radius: var(--r-md) 0 0 0;
+    }
+    .emotional-corner-br {
+      bottom: -9px; right: -9px;
+      border-bottom: 1.5px solid var(--gold-500);
+      border-right: 1.5px solid var(--gold-500);
+      border-radius: 0 0 var(--r-md) 0;
+    }
+
+    .emotional-img {
+      aspect-ratio: 4/5;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-card);
+      background: var(--ivory-100);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .emotional-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 50%;
+      display: block;
+      transition: transform 0.7s var(--ease-soft);
+    }
+    .emotional-img:hover img { transform: scale(1.04); }
+
+    /* Floating badge — top right */
+    .emotional-img-badge {
+      position: absolute;
+      top: 24px; right: 20px;
+      z-index: 3;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(201, 162, 39, 0.28);
+      border-radius: var(--r-pill);
+      padding: 8px 16px 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 16px rgba(80, 52, 6, 0.10);
+    }
+    .emotional-img-badge-icon {
+      font-size: 13px;
+      color: var(--gold-500);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .emotional-img-badge-text {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+      color: var(--text-strong);
+    }
+
+    /* Body + footer */
+    .emotional-body {
+      font-size: 18px;
+      line-height: 1.72;
+      color: var(--text-body);
+      max-width: 48ch;
+      margin: 0 auto var(--sp-5);
+    }
+    .emotional-script {
+      display: block;
+      font-family: var(--font-script);
+      font-size: 30px;
+      color: var(--gold-600);
+      line-height: 1;
+      margin: 0 auto var(--sp-6);
+    }
+
+    /* ================================================================
+       FAQ
+    ================================================================ */
+    .faq-list { max-width: 720px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border-muted); }
+    .faq-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-5);
+      padding: var(--sp-5) 0;
+      text-align: left;
+    }
+    .faq-question {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--text-strong);
+      letter-spacing: -0.01em;
+    }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-600);
+      font-family: var(--font-ui);
+      font-size: 22px;
+      font-weight: 300;
+      line-height: 1;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+    .faq-item.open .faq-icon { transform: rotate(135deg); }
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--dur-slow) var(--ease-soft);
+    }
+    .faq-item.open .faq-body { max-height: 400px; }
+    .faq-answer {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--text-body);
+      padding-bottom: var(--sp-5);
+      max-width: 60ch;
+    }
+
+    /* ================================================================
+       FINAL CTA BAND
+    ================================================================ */
+    .cta-band {
+      background: var(--ink-900);
+      padding: 120px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 90% at 50% 50%, rgba(201,162,39,0.06), transparent 65%);
+      pointer-events: none;
+    }
+    .cta-band .eyebrow { color: var(--gold-400); }
+    .cta-band-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(30px, 4.5vw, 54px);
+      color: var(--ivory-200);
+      margin-bottom: var(--sp-4);
+      letter-spacing: -0.015em;
+      position: relative;
+    }
+    .cta-band-sub {
+      font-size: 18px;
+      color: rgba(242,234,216,0.60);
+      margin-bottom: var(--sp-7);
+      max-width: 44ch;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    .footer {
+      background: var(--surface-alt);
+      border-top: 1px solid var(--border-card);
+      padding: var(--sp-7) 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--sp-4);
+    }
+    .footer-wordmark-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--text-strong);
+    }
+    .footer-wordmark-name em { font-style: italic; color: var(--gold-600); }
+    .footer-wordmark-sub {
+      font-family: var(--font-ui);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.36em;
+      color: var(--text-faint);
+      margin-top: 3px;
+    }
+    .footer-copy { font-size: 14px; color: var(--text-faint); }
+
+    /* ================================================================
+       SCROLL REVEAL
+    ================================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity var(--dur-slow) var(--ease-out),
+                  transform var(--dur-slow) var(--ease-out);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 70ms; }
+    .reveal-d2 { transition-delay: 140ms; }
+    .reveal-d3 { transition-delay: 210ms; }
+    .reveal-d4 { transition-delay: 280ms; }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+
+    /* ─── Tablet ≤960px ─── */
+    @media (max-width: 960px) {
+      .hero-grid, .about-grid, .personal-grid { grid-template-columns: 1fr; }
+
+      /* Hero: natural stacked layout — text above, image below */
+      .hero { min-height: auto; padding: 100px 0 72px; }
+      .hero-grid { gap: var(--sp-7); }          /* 96px → 48px vertical */
+
+      /* Image stays visible — landscape crop for horizontal viewport */
+      .hero-media-wrap { display: block; }
+      .hero-media { aspect-ratio: 3/2; }        /* portrait → landscape */
+      .hero-corner-tr, .hero-corner-bl { width: 36px; height: 36px; } /* smaller frame */
+      .hero-scroll { display: none; }
+
+      .audience-grid, .diff-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-link { display: none; }
+    }
+
+    /* ─── Mobile ≤640px ─── */
+    @media (max-width: 640px) {
+      :root { --section-y: 64px; }
+
+      /* Hero */
+      .hero { padding: 72px 0 52px; }
+      .hero-grid { gap: var(--sp-6); }           /* tighten further */
+      .hero-title { font-size: clamp(34px, 9.5vw, 44px); } /* comfortable mobile size */
+
+      /* Image on mobile — 4/3 keeps it wide without dominating */
+      .hero-media { aspect-ratio: 4/3; }
+      .hero-corner-tr, .hero-corner-bl { display: none; } /* clean up corners at small size */
+      .hero-img-badge {                          /* compact badge */
+        bottom: 14px; left: 14px;
+        padding: 6px 12px 6px 9px;
+        gap: 7px;
+      }
+      .hero-img-badge-text { font-size: 10px; }
+
+      /* Social proof */
+      .hero-proof { gap: var(--sp-3); }
+      .hero-proof-num { font-size: 20px; }
+      .hero-proof-label { font-size: 9px; }
+
+      /* CTA row */
+      .hero-cta-row { flex-direction: column; align-items: flex-start; }
+
+      /* Hide animated scroll cue */
+      .hero-scroll { display: none; }
+
+      /* Other sections */
+      .audience-grid, .diff-grid { grid-template-columns: 1fr; }
+      .cta-band { padding: 80px 0; }
+      .slider-btn { width: 34px; height: 34px; font-size: 14px; }
+      .products-slider { gap: var(--sp-2); }
+    }
+
+    /* ─── Very small screens ≤390px ─── */
+    @media (max-width: 390px) {
+      .hero-proof { flex-wrap: wrap; justify-content: flex-start; row-gap: var(--sp-3); }
+      .hero-proof-sep { display: none; }
+      .hero-proof-item:not(:first-child) { border-left: 1px solid var(--border-muted); padding-left: var(--sp-3); }
     }
   </style>
 </head>
 <body>
 
-<!-- ─── TOP BAR ──────────────────────────────── -->
-<header class="topbar">
-  <div class="topbar-left">
-    <span class="topbar-brand">Luz Maria Artesanal</span>
-    <div class="topbar-sep"></div>
-    <span class="topbar-doc">Design Brief</span>
+<!-- ═══════════════════════════════════════════════════════════ NAV -->
+<header class="nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-wordmark">
+      <span class="nav-wordmark-name">Luz<em>Maria</em></span>
+      <span class="nav-wordmark-sub">Artesanal</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#velas" class="nav-link">Velas</a>
+      <a href="#sobre" class="nav-link">Sobre</a>
+      <a href="#como-funciona" class="nav-link">Como funciona</a>
+      <a href="#duvidas" class="nav-link">Dúvidas</a>
+      <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+um+pedido." target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        Encomendar
+      </a>
+    </nav>
   </div>
-  <div class="topbar-active">
-    <div class="dot"></div>
-    <span id="topActiveLabel">Role o copy para navegar</span>
-  </div>
-  <span class="topbar-right">11 seções · Copy + Wireframe</span>
 </header>
 
-<div class="layout">
+<!-- ════════════════════════════════════════════════════════ S1: HERO -->
+<section class="hero" id="inicio">
+  <div class="container">
+    <div class="hero-grid">
 
-  <!-- ══════════════════════════════════════════
-       COLUNA ESQUERDA — COPY
-  ═════════════════════════════════════════════ -->
-  <div class="copy-pane tab-active" id="copyPane">
-    <div class="pane-header">
-      <span>Copy</span>
-      <span class="chip">Conteúdo da Landing Page</span>
-    </div>
-
-    <!-- S1 -->
-    <div class="copy-section" data-section="s1" id="copy-s1">
-      <div class="cs-tag">S1 · Hero / Primeira dobra</div>
-      <h2>Velas artesanais católicas para iluminar momentos de fé</h2>
-      <p>Peças feitas à mão, com delicadeza, significado e inspiração em Nossa Senhora Aparecida. Perfeitas para presentear, decorar seu cantinho de oração ou tornar datas especiais ainda mais memoráveis.</p>
-      <span class="cs-cta">[ CTA ] Quero fazer minha encomenda</span>
-    </div>
-
-    <!-- S2 -->
-    <div class="copy-section" data-section="s2" id="copy-s2">
-      <div class="cs-tag">S2 · Frase de Impacto</div>
-      <h2>"Mais do que uma vela, uma lembrança de fé, cuidado e presença de Deus nos pequenos detalhes."</h2>
-      <p>Cada peça da Luz Maria Artesanal é produzida manualmente, pensada para transmitir beleza, devoção e carinho em cada acabamento.</p>
-    </div>
-
-    <!-- S3 -->
-    <div class="copy-section" data-section="s3" id="copy-s3">
-      <div class="cs-tag">S3 · Sobre a Marca</div>
-      <h2>Feitas à mão, com fé e propósito</h2>
-      <p>A Luz Maria Artesanal nasceu para transformar velas em presentes cheios de significado. Cada criação carrega cuidado, beleza e uma inspiração especial na fé católica, especialmente na devoção a Nossa Senhora Aparecida.</p>
-      <p>São velas ideais para quem deseja presentear alguém querido, decorar um oratório, montar um cantinho de oração ou eternizar momentos religiosos com delicadeza.</p>
-    </div>
-
-    <!-- S4 -->
-    <div class="copy-section" data-section="s4" id="copy-s4">
-      <div class="cs-tag">S4 · Produtos</div>
-      <h2>Escolha sua vela artesanal</h2>
-      <p>Conheça alguns dos modelos disponíveis e fale diretamente pelo WhatsApp para consultar valores, disponibilidade e personalização.</p>
-      <div class="cs-product-grid">
-        <div class="cs-product">
-          <h4>Vela Nossa Senhora Aparecida</h4>
-          <p>Peça delicada e devocional, ideal para oratórios, cantinhos de oração e presentes especiais.</p>
-          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse na Vela Nossa Senhora Aparecida. Pode me passar valores, disponibilidade e prazo de envio?"</div>
+      <!-- copy column -->
+      <div>
+        <p class="eyebrow reveal">
+          <span class="hero-eyebrow-ornament" aria-hidden="true">✦&thinsp;</span>Velas devocionais artesanais
+        </p>
+        <h1 class="hero-title reveal reveal-d1">Iluminar momentos<br />de fé e devoção</h1>
+        <p class="hero-sub reveal reveal-d2">Peças feitas à mão, com delicadeza, significado e inspiração em Nossa Senhora Aparecida. Perfeitas para presentear, decorar seu cantinho de oração ou tornar datas especiais ainda mais memoráveis.</p>
+        <div class="hero-cta-row reveal reveal-d3">
+          <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            Quero fazer minha encomenda
+          </a>
+          <span class="hero-script">feitas com fé</span>
         </div>
-        <div class="cs-product">
-          <h4>Vela Personalizada</h4>
-          <p>Peça única com nome, detalhes personalizados ou intenção especial.</p>
-          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse em uma vela personalizada. Pode me explicar as opções, valores e prazo de produção?"</div>
-        </div>
-        <div class="cs-product">
-          <h4>Kit Presente de Fé</h4>
-          <p>Presente delicado, cheio de significado. Ideal para aniversários, Dia das Mães, datas religiosas.</p>
-          <div class="cs-wh">WhatsApp: "Vim pela landing page e gostaria de saber mais sobre o Kit Presente de Fé. Pode me enviar as opções disponíveis?"</div>
-        </div>
-        <div class="cs-product">
-          <h4>Velas para Oratório</h4>
-          <p>Artesanais pensadas para deixar o cantinho de oração mais bonito, acolhedor e especial.</p>
-          <div class="cs-wh">WhatsApp: "Vim pela landing page e tenho interesse nas velas para oratório. Pode me enviar os modelos disponíveis?"</div>
-        </div>
-        <div class="cs-product" style="grid-column:1/-1;">
-          <h4>Lembrancinhas Religiosas</h4>
-          <p>Personalizadas para batizado, crisma, catequese, encontros de oração, grupos de igreja e datas especiais.</p>
-          <div class="cs-wh">WhatsApp: "Vim pela landing page e gostaria de saber mais sobre lembrancinhas religiosas personalizadas. Pode me passar as opções para eventos?"</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- S5 -->
-    <div class="copy-section" data-section="s5" id="copy-s5">
-      <div class="cs-tag">S5 · Personalização</div>
-      <h2>Uma vela feita especialmente para o seu momento</h2>
-      <p>Você pode encomendar velas personalizadas para presentes, datas comemorativas, eventos religiosos, lembrancinhas ou intenções especiais.</p>
-      <p>Cada detalhe é pensado com carinho para que a peça tenha significado e combine com a ocasião.</p>
-      <span class="cs-cta">[ CTA ] Falar sobre personalização</span>
-    </div>
-
-    <!-- S6 -->
-    <div class="copy-section" data-section="s6" id="copy-s6">
-      <div class="cs-tag">S6 · Para Quem É</div>
-      <h2>Perfeita para quem deseja presentear com significado</h2>
-      <p>As velas da Luz Maria Artesanal são ideais para:</p>
-      <ul>
-        <li>Presentear alguém especial</li>
-        <li>Decorar seu cantinho de oração</li>
-        <li>Montar um oratório delicado</li>
-        <li>Dar lembrancinhas em eventos religiosos</li>
-        <li>Celebrar datas católicas</li>
-        <li>Expressar carinho através da fé</li>
-      </ul>
-    </div>
-
-    <!-- S7 -->
-    <div class="copy-section" data-section="s7" id="copy-s7">
-      <div class="cs-tag">S7 · Como Funciona</div>
-      <h2>Comprar é simples</h2>
-      <div class="cs-steps">
-        <div class="cs-step">Escolha o modelo desejado</div>
-        <div class="cs-step">Clique no botão do produto</div>
-        <div class="cs-step">Fale pelo WhatsApp</div>
-        <div class="cs-step">Confira valores, prazo e personalização</div>
-        <div class="cs-step">Receba sua vela artesanal em casa</div>
-      </div>
-      <p style="margin-top:12px; font-size:14px; color:var(--gray-500);">Enviamos para todo o Brasil.</p>
-    </div>
-
-    <!-- S8 -->
-    <div class="copy-section" data-section="s8" id="copy-s8">
-      <div class="cs-tag">S8 · Diferenciais</div>
-      <h2>Por que escolher a Luz Maria Artesanal?</h2>
-      <div class="cs-diff-grid">
-        <div class="cs-diff"><strong>Produção feita à mão</strong>Cada peça é única e cuidadosa.</div>
-        <div class="cs-diff"><strong>Peças personalizadas</strong>Nome, data ou intenção especial.</div>
-        <div class="cs-diff"><strong>Inspiração na fé</strong>Devoção em cada detalhe.</div>
-        <div class="cs-diff"><strong>Para eventos</strong>Kits e lembrancinhas sob encomenda.</div>
-        <div class="cs-diff"><strong>Atendimento WhatsApp</strong>Direto e personalizado.</div>
-        <div class="cs-diff"><strong>Envio nacional</strong>Para todo o Brasil.</div>
-      </div>
-    </div>
-
-    <!-- S9 -->
-    <div class="copy-section" data-section="s9" id="copy-s9">
-      <div class="cs-tag">S9 · Chamada Emocional</div>
-      <h2>"A fé também mora nos detalhes."</h2>
-      <p>Uma vela acesa pode tornar um ambiente mais acolhedor, uma oração mais especial e um presente ainda mais cheio de significado.</p>
-      <p>Escolha uma peça feita com carinho para iluminar momentos importantes da sua vida.</p>
-      <span class="cs-cta">[ CTA ] Quero escolher minha vela</span>
-    </div>
-
-    <!-- S10 -->
-    <div class="copy-section" data-section="s10" id="copy-s10">
-      <div class="cs-tag">S10 · Perguntas Frequentes</div>
-      <h2>Dúvidas frequentes</h2>
-      <div class="cs-faq-item">
-        <strong>As velas são feitas à mão?</strong>
-        <p>Sim. Cada vela é produzida artesanalmente, com cuidado em cada detalhe.</p>
-      </div>
-      <div class="cs-faq-item">
-        <strong>Posso personalizar minha vela?</strong>
-        <p>Sim. É possível consultar opções de personalização pelo WhatsApp.</p>
-      </div>
-      <div class="cs-faq-item">
-        <strong>Vocês enviam para todo o Brasil?</strong>
-        <p>Sim. Os envios são feitos para diferentes regiões do Brasil.</p>
-      </div>
-      <div class="cs-faq-item">
-        <strong>Posso encomendar para eventos?</strong>
-        <p>Sim. Trabalhamos com lembrancinhas para batizado, crisma, catequese e encontros de oração.</p>
-      </div>
-      <div class="cs-faq-item">
-        <strong>Como faço para comprar?</strong>
-        <p>Basta escolher o produto e clicar no botão para falar pelo WhatsApp.</p>
-      </div>
-    </div>
-
-    <!-- S11 -->
-    <div class="copy-section" data-section="s11" id="copy-s11">
-      <div class="cs-tag">S11 · CTA Final</div>
-      <h2>Ilumine momentos especiais com uma vela feita à mão</h2>
-      <p>Escolha sua vela artesanal católica e fale agora pelo WhatsApp para consultar modelos, valores e disponibilidade.</p>
-      <span class="cs-cta">[ CTA PRINCIPAL ] Fazer minha encomenda</span>
-    </div>
-
-    <div style="height:1px; scroll-snap-align:start;"></div>
-  </div><!-- /copy-pane -->
-
-
-  <!-- ══════════════════════════════════════════
-       COLUNA DIREITA — WIREFRAME
-  ═════════════════════════════════════════════ -->
-  <div class="wf-pane" id="wfPane">
-    <div class="pane-header" style="background:var(--gray-100);">
-      <span>Wireframe</span>
-      <span class="chip">Estrutura da Página</span>
-    </div>
-
-    <div class="wf-progress">
-      <span class="wf-progress-label">Seções</span>
-      <div class="wf-pip" data-pip="s1"  title="S1 Hero"></div>
-      <div class="wf-pip" data-pip="s2"  title="S2 Impacto"></div>
-      <div class="wf-pip" data-pip="s3"  title="S3 Sobre"></div>
-      <div class="wf-pip" data-pip="s4"  title="S4 Produtos"></div>
-      <div class="wf-pip" data-pip="s5"  title="S5 Personal."></div>
-      <div class="wf-pip" data-pip="s6"  title="S6 Público"></div>
-      <div class="wf-pip" data-pip="s7"  title="S7 Como Funciona"></div>
-      <div class="wf-pip" data-pip="s8"  title="S8 Diferenciais"></div>
-      <div class="wf-pip" data-pip="s9"  title="S9 Emocional"></div>
-      <div class="wf-pip" data-pip="s10" title="S10 FAQ"></div>
-      <div class="wf-pip" data-pip="s11" title="S11 CTA Final"></div>
-    </div>
-
-    <div style="margin:10px 14px 0;">
-      <div class="wf-nav-tag">↑ Navbar (fixa no topo)</div>
-      <div class="wf-nav-placeholder">
-        <div class="wf-nav-logo-box">[ LOGO ]</div>
-        <div class="wf-nav-links">
-          <div class="wf-nav-lnk"></div><div class="wf-nav-lnk"></div>
-          <div class="wf-nav-lnk"></div><div class="wf-nav-lnk"></div>
-        </div>
-        <div class="wf-nav-btn">WhatsApp</div>
-      </div>
-    </div>
-
-    <!-- S1 Hero -->
-    <div class="wf-block" data-wf="s1" id="wf-s1">
-      <div class="wf-label">S1 · Hero<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="c2">
-          <div>
-            <div class="tl title w85"></div>
-            <div class="tl w100"></div><div class="tl w100"></div>
-            <div class="tl w70" style="margin-bottom:12px;"></div>
-            <div class="wf-btn">Quero fazer minha encomenda</div>
+        <!-- Social proof -->
+        <div class="hero-proof reveal reveal-d4">
+          <div class="hero-proof-item">
+            <p class="hero-proof-num">500<span class="hero-proof-accent">+</span></p>
+            <p class="hero-proof-label">Pedidos feitos</p>
           </div>
-          <div class="ph" style="height:96px;">[ IMAGEM HERO ]</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- S2 Impacto -->
-    <div class="wf-block" data-wf="s2" id="wf-s2">
-      <div class="wf-label">S2 · Frase de Impacto<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body" style="background:var(--gray-100); padding:20px 48px; text-align:center;">
-        <div class="tl title" style="margin:0 auto 6px; width:80%;"></div>
-        <div class="tl w85" style="margin:0 auto 4px;"></div>
-        <div class="tl w55" style="margin:0 auto 14px;"></div>
-        <div class="tl w100" style="margin:0 auto 4px;"></div>
-        <div class="tl w70" style="margin:0 auto;"></div>
-      </div>
-    </div>
-
-    <!-- S3 Sobre -->
-    <div class="wf-block" data-wf="s3" id="wf-s3">
-      <div class="wf-label">S3 · Sobre a Marca<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="c2">
-          <div class="ph" style="height:90px;">[ FOTO ARTESÃ ]</div>
-          <div>
-            <div class="tl subtitle w70"></div>
-            <div class="tl w100"></div><div class="tl w100"></div>
-            <div class="tl w85" style="margin-bottom:10px;"></div>
-            <div class="tl w55"></div><div class="tl w55"></div><div class="tl w55"></div>
+          <span class="hero-proof-sep" aria-hidden="true"></span>
+          <div class="hero-proof-item">
+            <p class="hero-proof-num">Todo</p>
+            <p class="hero-proof-label">o Brasil</p>
+          </div>
+          <span class="hero-proof-sep" aria-hidden="true"></span>
+          <div class="hero-proof-item">
+            <p class="hero-proof-num">100<span class="hero-proof-accent">%</span></p>
+            <p class="hero-proof-label">Artesanal</p>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- S4 Produtos -->
-    <div class="wf-block" data-wf="s4" id="wf-s4">
-      <div class="wf-label">S4 · Produtos — 5 cards<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="tl subtitle w60"></div>
-        <div class="tl w85" style="margin-bottom:10px;"></div>
-        <div class="g3" style="margin-bottom:8px;">
-          <div class="wf-card">
-            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
-            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
-            <div class="wf-btn sm">Quero essa vela</div>
-          </div>
-          <div class="wf-card">
-            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
-            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
-            <div class="wf-btn sm">Quero personalizar</div>
-          </div>
-          <div class="wf-card">
-            <div class="ph" style="height:48px;margin-bottom:6px;font-size:8px;">[ FOTO ]</div>
-            <div class="tl w55"></div><div class="tl w100"></div><div class="tl w85"></div>
-            <div class="wf-btn sm">Montar um presente</div>
-          </div>
+      <!-- image column -->
+      <div class="hero-media-wrap reveal reveal-d2">
+        <span class="hero-corner-tr" aria-hidden="true"></span>
+        <span class="hero-corner-bl" aria-hidden="true"></span>
+        <div class="hero-media">
+          <img src="assets/foto1.jpg" alt="Luz Maria segurando vela artesanal decorada com ornamentos dourados" />
         </div>
-        <div class="g2">
-          <div class="wf-card">
-            <div class="ph" style="height:40px;margin-bottom:5px;font-size:8px;">[ FOTO ]</div>
-            <div class="tl w55"></div><div class="tl w85"></div>
-            <div class="wf-btn sm">Para meu oratório</div>
-          </div>
-          <div class="wf-card">
-            <div class="ph" style="height:40px;margin-bottom:5px;font-size:8px;">[ FOTO ]</div>
-            <div class="tl w55"></div><div class="tl w85"></div>
-            <div class="wf-btn sm">Para meu evento</div>
-          </div>
+        <div class="hero-img-badge" aria-hidden="true">
+          <span class="hero-img-badge-dot"></span>
+          <span class="hero-img-badge-text">Feito à mão</span>
         </div>
       </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="hero-scroll" aria-hidden="true">
+    <span class="hero-scroll-label">scroll</span>
+    <span class="hero-scroll-line"></span>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═══════════════════════════════════════════ S2: IMPACT QUOTE BAND -->
+<section class="section section-parchment" id="impacto">
+
+  <!-- Decorative side ornaments -->
+  <div class="impact-orn-side impact-orn-side-left" aria-hidden="true">
+    <span class="impact-orn-side-dot"></span>
+    <span class="impact-orn-side-line"></span>
+    <span class="impact-orn-side-dot"></span>
+    <span class="impact-orn-side-line"></span>
+    <span class="impact-orn-side-dot"></span>
+  </div>
+  <div class="impact-orn-side impact-orn-side-right" aria-hidden="true">
+    <span class="impact-orn-side-dot"></span>
+    <span class="impact-orn-side-line"></span>
+    <span class="impact-orn-side-dot"></span>
+    <span class="impact-orn-side-line"></span>
+    <span class="impact-orn-side-dot"></span>
+  </div>
+
+  <div class="container">
+    <div class="impact-inner">
+
+      <!-- Top rule -->
+      <div class="impact-rule reveal">
+        <span class="impact-rule-stars" aria-hidden="true">✦&thinsp;✦&thinsp;✦</span>
+      </div>
+
+      <p class="impact-quote reveal reveal-d1">"Mais do que uma vela, uma lembrança de fé, cuidado e da presença de Deus nos pequenos detalhes."</p>
+
+      <span class="impact-attr reveal reveal-d2">Luz Maria</span>
+
+      <!-- Divider -->
+      <div class="impact-divider reveal reveal-d3" aria-hidden="true">
+        <div class="impact-divider-diamond"></div>
+      </div>
+
+      <p class="impact-sub reveal reveal-d3">Cada peça é produzida manualmente, com atenção a cada acabamento, para que o presente seja tão especial quanto a ocasião.</p>
+
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ════════════════════════════════════════════ S3: BRAND STORY / SOBRE -->
+<section class="section" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- image column -->
+      <div class="about-media-wrap reveal">
+        <span class="about-corner-tl" aria-hidden="true"></span>
+        <span class="about-corner-br" aria-hidden="true"></span>
+        <div class="about-media">
+          <img src="assets/foto2.jpg" alt="Artesã produzindo velas à mão com pinça e ornamentos dourados" />
+        </div>
+        <div class="about-img-badge" aria-hidden="true">
+          <span class="about-img-badge-icon">✦</span>
+          <span class="about-img-badge-text">O processo artesanal</span>
+        </div>
+      </div>
+
+      <!-- copy column -->
+      <div class="reveal reveal-d1">
+        <p class="eyebrow">Sobre a marca</p>
+        <div class="about-story">
+          <div class="about-story-inner ornate">
+            <span class="about-quote-accent" aria-hidden="true"></span>
+            <p class="about-quote">"A LuzMaria Artesanal nasceu para transformar velas em presentes cheios de significado."</p>
+            <p class="about-text">Cada criação carrega cuidado, beleza e uma inspiração especial na fé católica, especialmente na devoção a Nossa Senhora Aparecida.</p>
+            <p class="about-text" style="margin-top:var(--sp-4);">São velas ideais para quem deseja presentear alguém querido, decorar um oratório, montar um cantinho de oração ou eternizar momentos religiosos com delicadeza.</p>
+            <span class="script-sig">com fé e carinho</span>
+          </div>
+        </div>
+        <!-- Craft attributes -->
+        <p class="about-craft-line">
+          Ornamentos naturais<span class="about-craft-sep">✦</span>Acabamento feito à mão<span class="about-craft-sep">✦</span>Entregamos para todo o Brasil
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═══════════════════════════════════════════════════ S4: PRODUCTS -->
+<section class="section section-alt" id="velas">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Nossas velas</p>
+      <h2 style="font-size:clamp(28px,4vw,44px);">Escolha a sua devoção</h2>
+      <div class="filete-node"><div class="filete-diamond"></div></div>
+      <p class="section-sub">Conheça os modelos disponíveis e fale pelo WhatsApp para consultar valores, disponibilidade e personalização.</p>
     </div>
 
-    <!-- S5 Personalização -->
-    <div class="wf-block" data-wf="s5" id="wf-s5">
-      <div class="wf-label">S5 · Personalização<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body" style="background:var(--gray-100);">
-        <div class="c2r">
-          <div>
-            <div class="tl subtitle w75"></div>
-            <div class="tl w100"></div><div class="tl w100"></div>
-            <div class="tl w70" style="margin-bottom:10px;"></div>
-            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;">
-              <div class="ph" style="height:16px;width:55px;font-size:7px;">tag</div>
-              <div class="ph" style="height:16px;width:75px;font-size:7px;">tag</div>
-              <div class="ph" style="height:16px;width:65px;font-size:7px;">tag</div>
-              <div class="ph" style="height:16px;width:70px;font-size:7px;">tag</div>
+    <div class="products-slider reveal">
+      <button class="slider-btn slider-prev" onclick="slideProducts(-1)" aria-label="Vela anterior" disabled>&#8592;</button>
+      <div class="slider-viewport">
+        <div class="slider-track" id="productsTrack">
+
+          <article class="card">
+            <div class="card-photo">
+              <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.37 (2).jpeg" alt="Vela Nossa Senhora Aparecida artesanal com pedras e luz dourada" />
+              <span class="card-badge">Mais pedida</span>
             </div>
-            <div class="wf-btn">Falar sobre personalização</div>
+            <div class="card-body">
+              <h3 class="card-name">Vela Nossa Senhora Aparecida</h3>
+              <p class="card-desc">Peça delicada e devocional, ideal para oratórios, cantinhos de oração e presentes de fé.</p>
+              <div class="card-cta">
+                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Nossa+Senhora+Aparecida.+Pode+me+passar+valores%2C+disponibilidade+e+prazo%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Quero essa vela
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-photo">
+              <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.38.jpeg" alt="Vela Espírito Santo artesanal com pomba dourada" />
+            </div>
+            <div class="card-body">
+              <h3 class="card-name">Vela Sagrado Coração</h3>
+              <p class="card-desc">Inspirada no Sagrado Coração de Jesus, para momentos de intenção, oração e reconforto.</p>
+              <div class="card-cta">
+                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Sagrado+Cora%C3%A7%C3%A3o.+Pode+me+enviar+valores+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Quero essa vela
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-photo">
+              <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.38 (1).jpeg" alt="Kit Presente de Fé com conjunto de velas artesanais" />
+            </div>
+            <div class="card-body">
+              <h3 class="card-name">Kit Presente de Fé</h3>
+              <p class="card-desc">Presente delicado, cheio de significado. Ideal para aniversários, Dia das Mães e datas religiosas.</p>
+              <div class="card-cta">
+                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+mais+sobre+o+Kit+Presente+de+F%C3%A9.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Montar um presente
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-photo">
+              <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (3).jpeg" alt="Vela Ostensório para oratório em base dourada" />
+            </div>
+            <div class="card-body">
+              <h3 class="card-name">Velas para Oratório</h3>
+              <p class="card-desc">Artesanais pensadas para deixar o cantinho de oração mais bonito, acolhedor e especial.</p>
+              <div class="card-cta">
+                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+velas+para+orat%C3%B3rio.+Pode+me+enviar+os+modelos+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Quero para meu oratório
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-photo">
+              <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39.jpeg" alt="Lembrancinhas religiosas - velas azuis Nossa Senhora Aparecida" />
+            </div>
+            <div class="card-body">
+              <h3 class="card-name">Lembrancinhas Religiosas</h3>
+              <p class="card-desc">Personalizadas para batizado, crisma, catequese, encontros de oração e grupos de igreja.</p>
+              <div class="card-cta">
+                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+sobre+lembrancinhas+religiosas+personalizadas.+Pode+me+passar+op%C3%A7%C3%B5es+para+eventos%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Quero para meu evento
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+      <button class="slider-btn slider-next" onclick="slideProducts(1)" aria-label="Próxima vela">&#8594;</button>
+    </div>
+    <div class="slider-dots" id="productsDots"></div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ════════════════════════════════════════════ S5: PERSONALIZATION -->
+<section class="section" id="personalizar">
+  <div class="container">
+    <div class="personal-grid">
+
+      <!-- copy column -->
+      <div class="reveal">
+        <p class="eyebrow"><span class="hero-eyebrow-ornament" aria-hidden="true">✦&thinsp;</span>Personalização</p>
+        <h2 class="personal-h2">Uma vela feita especialmente para o seu momento</h2>
+        <p class="personal-body">Você pode encomendar velas personalizadas para presentes, datas comemorativas, eventos religiosos ou intenções especiais.</p>
+        <p class="personal-body" style="margin-top:var(--sp-3);">Cada detalhe é pensado com carinho para que a peça tenha significado e combine com a ocasião.</p>
+        <div class="tags">
+          <span class="tag">Presentes</span>
+          <span class="tag">Datas comemorativas</span>
+          <span class="tag">Batizado</span>
+          <span class="tag">Crisma</span>
+          <span class="tag">Intenções especiais</span>
+          <span class="tag">Aniversário</span>
+        </div>
+        <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+encomendar+uma+vela+personalizada.+Pode+me+explicar+as+op%C3%A7%C3%B5es%3F" target="_blank" rel="noopener" class="btn btn-primary btn-md">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Falar sobre personalização
+        </a>
+        <span class="personal-script">personalizada com amor</span>
+      </div>
+
+      <!-- image column -->
+      <div class="personal-media-wrap reveal reveal-d1">
+        <span class="personal-corner-tr" aria-hidden="true"></span>
+        <span class="personal-corner-bl" aria-hidden="true"></span>
+        <div class="personal-media">
+          <img src="assets/foto3.jpg" alt="Vela artesanal de Nossa Senhora Aparecida com pedras azuis e folhas de ouro, acesa em oratório" />
+        </div>
+        <div class="personal-img-badge" aria-hidden="true">
+          <span class="personal-img-badge-dot"></span>
+          <span class="personal-img-badge-text">Cada peça, única</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═════════════════════════════════════════ S6: WHO IT'S FOR -->
+<section class="section section-alt" id="para-quem">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Para quem é</p>
+      <h2 style="font-size:clamp(26px,3.5vw,40px);">Perfeita para quem deseja presentear com significado</h2>
+    </div>
+    <div class="audience-grid">
+      <div class="audience-item reveal">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Presentear alguém especial com algo feito à mão</p>
+      </div>
+      <div class="audience-item reveal reveal-d1">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Decorar o cantinho de oração com delicadeza</p>
+      </div>
+      <div class="audience-item reveal reveal-d2">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Montar um oratório bonito e acolhedor</p>
+      </div>
+      <div class="audience-item reveal reveal-d1">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Lembrancinhas religiosas para celebrações</p>
+      </div>
+      <div class="audience-item reveal reveal-d2">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Celebrar datas católicas com presença e cuidado</p>
+      </div>
+      <div class="audience-item reveal reveal-d3">
+        <span class="audience-ornament">✦</span>
+        <p class="audience-label">Expressar carinho e devoção por meio de um presente único</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═══════════════════════════════════════════ S7: HOW IT WORKS -->
+<section class="section" id="como-funciona">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Como funciona</p>
+      <h2 style="font-size:clamp(26px,3.5vw,40px);">Comprar é simples e direto</h2>
+    </div>
+
+    <div class="steps-wrap reveal">
+      <div class="steps-list">
+
+        <!-- Step 1 -->
+        <div class="step-item">
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
           </div>
-          <div class="ph" style="height:88px;">[ IMAGEM ]</div>
+          <div class="step-circle">1</div>
+          <div class="step-text-group">
+            <p class="step-title">Escolha o modelo</p>
+            <p class="step-desc">Navegue pelas velas e encontre a que combina com o momento</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="step-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-item">
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 15l-6-6M9 9v6h6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+          </div>
+          <div class="step-circle">2</div>
+          <div class="step-text-group">
+            <p class="step-title">Clique no botão</p>
+            <p class="step-desc">Acesse o link direto de cada produto na página</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="step-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+
+        <!-- Step 3 — WhatsApp (highlighted) -->
+        <div class="step-item step-item--cta">
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          </div>
+          <div class="step-circle">3</div>
+          <div class="step-text-group">
+            <p class="step-title">Fale pelo WhatsApp</p>
+            <p class="step-desc">Atendimento direto e personalizado, sem burocracia</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="step-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-item">
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div class="step-circle">4</div>
+          <div class="step-text-group">
+            <p class="step-title">Confirme o pedido</p>
+            <p class="step-desc">Valores, detalhes e personalização alinhados com você</p>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="step-connector" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step-item">
+          <div class="step-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+          </div>
+          <div class="step-circle">5</div>
+          <div class="step-text-group">
+            <p class="step-title">Receba em casa</p>
+            <p class="step-desc">Sua vela chega com cuidado, embalada com carinho</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="shipping-note reveal">
+        <span class="shipping-note-diamond" aria-hidden="true"></span>
+        Enviamos para todo o Brasil
+        <span class="shipping-note-diamond" aria-hidden="true"></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═══════════════════════════════════════════ S8: DIFFERENTIALS -->
+<section class="section section-parchment" id="diferenciais">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Por que escolher</p>
+      <h2 style="font-size:clamp(26px,3.5vw,40px);">Por que escolher a LuzMaria Artesanal?</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-item reveal">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Produção feita à mão</p>
+        <p class="diff-desc">Cada vela é única, produzida com cuidado e atenção em cada etapa do processo.</p>
+      </div>
+      <div class="diff-item reveal reveal-d1">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Peças personalizadas</p>
+        <p class="diff-desc">Nome, data ou intenção — cada vela pode ser feita especialmente para o seu momento.</p>
+      </div>
+      <div class="diff-item reveal reveal-d2">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Inspiração na fé católica</p>
+        <p class="diff-desc">A devoção a Nossa Senhora Aparecida está presente em cada detalhe das criações.</p>
+      </div>
+      <div class="diff-item reveal reveal-d1">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Para presentes e eventos</p>
+        <p class="diff-desc">Kits, lembrancinhas e conjuntos para datas religiosas e momentos especiais.</p>
+      </div>
+      <div class="diff-item reveal reveal-d2">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Atendimento pelo WhatsApp</p>
+        <p class="diff-desc">Fale diretamente com a gente. Atendimento rápido, humano e personalizado.</p>
+      </div>
+      <div class="diff-item reveal reveal-d3">
+        <span class="diff-gold-line"></span>
+        <p class="diff-title">Envio para todo o Brasil</p>
+        <p class="diff-desc">Enviamos para qualquer região. Prazo e frete combinados durante o pedido.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ══════════════════════════════════════════ S9: EMOTIONAL CTA -->
+<section class="section emotional" id="fe">
+  <div class="container">
+    <div class="emotional-inner">
+
+      <!-- Header -->
+      <div class="emotional-head reveal">
+        <p class="eyebrow"><span class="hero-eyebrow-ornament" aria-hidden="true">✦&thinsp;</span>A fé nos pequenos detalhes</p>
+        <h2 class="emotional-title">"A fé também mora nos detalhes."</h2>
+      </div>
+
+      <!-- Portrait image -->
+      <div class="emotional-img-wrap reveal reveal-d1">
+        <span class="emotional-corner-tl" aria-hidden="true"></span>
+        <span class="emotional-corner-br" aria-hidden="true"></span>
+        <div class="emotional-img">
+          <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.40.jpeg" alt="Vela artesanal de Nossa Senhora Aparecida com pedras naturais e base de strass dourado" />
+        </div>
+        <div class="emotional-img-badge" aria-hidden="true">
+          <span class="emotional-img-badge-icon">✦</span>
+          <span class="emotional-img-badge-text">Um detalhe de fé</span>
+        </div>
+      </div>
+
+      <!-- Body + CTA -->
+      <div class="reveal reveal-d2">
+        <div class="filete-node" style="margin-bottom:var(--sp-5);"><div class="filete-diamond"></div></div>
+        <p class="emotional-body">Uma vela acesa pode tornar um ambiente mais acolhedor, uma oração mais especial e um presente ainda mais cheio de significado.</p>
+        <span class="emotional-script">acenda sua fé</span>
+        <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+escolher+minha+vela+artesanal." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Quero escolher minha vela
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
+<!-- ═══════════════════════════════════════════════ S10: FAQ -->
+<section class="section section-alt" id="duvidas">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">Dúvidas frequentes</p>
+      <h2 style="font-size:clamp(26px,3.5vw,40px);">Antes de encomendar</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="true">
+          <span class="faq-question">As velas são feitas à mão?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Sim. Cada vela é produzida artesanalmente, com cuidado e atenção em cada detalhe do processo.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Posso personalizar minha vela?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Sim. É possível consultar as opções de personalização — nome, data e intenção — diretamente pelo WhatsApp.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Vocês enviam para todo o Brasil?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Sim, enviamos para todo o país. O frete e o prazo são combinados durante a conversa no WhatsApp.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Posso encomendar para eventos religiosos?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Sim. A LuzMaria Artesanal trabalha com lembrancinhas religiosas para batizado, crisma, catequese, encontros de oração e outros eventos.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Como faço para comprar?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Basta escolher o produto e clicar no botão para falar diretamente pelo WhatsApp. Não há checkout no site — a conversa e o pedido são feitos por lá.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-btn" onclick="toggleFaq(this)" aria-expanded="false">
+          <span class="faq-question">Qual o prazo de produção?</span>
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-body">
+          <p class="faq-answer">Por serem feitas sob encomenda, o prazo varia conforme o modelo e a personalização. Informamos tudo antes de você confirmar o pedido.</p>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- S6 Para quem -->
-    <div class="wf-block" data-wf="s6" id="wf-s6">
-      <div class="wf-label">S6 · Para Quem É<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="tl subtitle w75" style="margin-bottom:10px;"></div>
-        <div class="g3">
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-          <div class="ph" style="height:50px;flex-direction:column;gap:3px;font-size:7px;"><div style="width:20px;height:20px;border:1.5px dashed #bbb;background:var(--gray-200);margin-bottom:3px;"></div>item</div>
-        </div>
-      </div>
+<!-- ══════════════════════════════════════════ S11: FINAL CTA BAND -->
+<section class="cta-band" id="encomendar">
+  <div class="container">
+    <div class="reveal">
+      <p class="eyebrow">Ilumine momentos especiais</p>
+      <h2 class="cta-band-title">Acenda uma luz de fé hoje</h2>
+      <p class="cta-band-sub">Escolha sua vela artesanal católica e fale agora pelo WhatsApp para consultar modelos, valores e disponibilidade.</p>
+      <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda+de+vela+artesanal." target="_blank" rel="noopener" class="btn btn-dark btn-lg">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        Fazer minha encomenda
+      </a>
     </div>
+  </div>
+</section>
 
-    <!-- S7 Como funciona -->
-    <div class="wf-block" data-wf="s7" id="wf-s7">
-      <div class="wf-label">S7 · Como Funciona<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="tl subtitle w55" style="margin-bottom:8px;"></div>
-        <div class="wf-step-row">
-          <div class="wf-step"><div class="wf-step-n">1</div>Escolha</div>
-          <div class="wf-step"><div class="wf-step-n">2</div>Clique</div>
-          <div class="wf-step"><div class="wf-step-n">3</div>WhatsApp</div>
-          <div class="wf-step"><div class="wf-step-n">4</div>Confirme</div>
-          <div class="wf-step"><div class="wf-step-n">5</div>Receba</div>
-        </div>
-        <div class="ph" style="height:22px;margin-top:8px;font-size:8px;">[ Enviamos para todo o Brasil ]</div>
+<!-- ════════════════════════════════════════════════════ FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div style="display:flex;flex-direction:column;line-height:1;">
+        <span class="footer-wordmark-name">Luz<em>Maria</em></span>
+        <span class="footer-wordmark-sub">Artesanal</span>
       </div>
+      <p class="footer-copy">Velas devocionais feitas à mão · © 2026 LuzMaria Artesanal</p>
     </div>
-
-    <!-- S8 Diferenciais -->
-    <div class="wf-block" data-wf="s8" id="wf-s8">
-      <div class="wf-label">S8 · Diferenciais<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="tl subtitle w70" style="margin-bottom:8px;"></div>
-        <div class="g3">
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 1</div>
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 2</div>
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 3</div>
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 4</div>
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 5</div>
-          <div class="ph" style="height:42px;font-size:8px;">diferencial 6</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- S9 Emocional -->
-    <div class="wf-block" data-wf="s9" id="wf-s9">
-      <div class="wf-label">S9 · Chamada Emocional<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body" style="background:var(--gray-100);text-align:center;padding:20px 32px;">
-        <div class="tl title" style="margin:0 auto 8px;width:72%;"></div>
-        <div class="ph" style="height:56px;max-width:260px;margin:0 auto 10px;font-size:8px;">[ IMAGEM EMOCIONAL ]</div>
-        <div class="tl w85" style="margin:0 auto 4px;"></div>
-        <div class="tl w70" style="margin:0 auto 14px;"></div>
-        <div class="wf-btn" style="font-size:8px;">Quero escolher minha vela</div>
-      </div>
-    </div>
-
-    <!-- S10 FAQ -->
-    <div class="wf-block" data-wf="s10" id="wf-s10">
-      <div class="wf-label">S10 · FAQ<span class="wf-indicator">◀ lendo agora</span></div>
-      <div class="wf-body">
-        <div class="tl subtitle w50" style="margin-bottom:8px;"></div>
-        <div class="wf-faq">As velas são feitas à mão?<span>+</span></div>
-        <div class="wf-faq">Posso personalizar minha vela?<span>+</span></div>
-        <div class="wf-faq">Vocês enviam para todo o Brasil?<span>+</span></div>
-        <div class="wf-faq">Posso encomendar para eventos?<span>+</span></div>
-        <div class="wf-faq">Como faço para comprar?<span>+</span></div>
-      </div>
-    </div>
-
-    <!-- S11 CTA Final -->
-    <div class="wf-block wf-dark" data-wf="s11" id="wf-s11">
-      <div class="wf-label" style="background:#2a2a2a;border-color:#3a3a3a;color:#aaa;">
-        S11 · CTA Final<span class="wf-indicator">◀ lendo agora</span>
-      </div>
-      <div class="wf-body" style="background:#1a1a1a;text-align:center;padding:20px 40px;">
-        <div class="tl title" style="width:78%;margin:0 auto 6px;"></div>
-        <div class="tl" style="width:90%;margin:0 auto 4px;background:#444;"></div>
-        <div class="tl" style="width:70%;margin:0 auto 16px;background:#444;"></div>
-        <div class="wf-btn inv" style="font-size:8px;">Fazer minha encomenda</div>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="wf-footer">
-      <div style="font-size:9px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Footer</div>
-      <div class="g3">
-        <div>
-          <div class="tl w55" style="margin-bottom:4px;"></div>
-          <div class="tl w40"></div><div class="tl w40"></div>
-        </div>
-        <div>
-          <div class="tl w55" style="margin-bottom:4px;"></div>
-          <div class="tl w70"></div><div class="tl w70"></div><div class="tl w70"></div>
-        </div>
-        <div>
-          <div class="tl w55" style="margin-bottom:4px;"></div>
-          <div class="tl w70"></div><div class="tl w70"></div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /wf-pane -->
-
-</div><!-- /layout -->
-
-<!-- ─── MOBILE TABS (visível apenas em ≤768px) ── -->
-<nav class="mobile-tabs" id="mobileTabs">
-  <button class="mob-tab active" id="tabCopy" onclick="switchTab('copy')" aria-label="Conteúdo">
-    <span class="mob-tab-icon">✏</span>
-    <span>Copy</span>
-  </button>
-  <div class="mob-tab-sep"></div>
-  <button class="mob-tab" id="tabWf" onclick="switchTab('wf')" aria-label="Wireframe">
-    <span class="mob-tab-icon">▦</span>
-    <span>Wireframe</span>
-  </button>
-</nav>
+  </div>
+</footer>
 
 <script>
-  const copyPane    = document.getElementById('copyPane');
-  const wfPane      = document.getElementById('wfPane');
-  const activeLabel = document.getElementById('topActiveLabel');
-  const PANE_HDR_H  = 38;
+  // Nav scroll
+  const nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 
-  const SECTION_NAMES = {
-    s1:'S1 · Hero', s2:'S2 · Frase de Impacto', s3:'S3 · Sobre a Marca',
-    s4:'S4 · Produtos', s5:'S5 · Personalização', s6:'S6 · Para Quem É',
-    s7:'S7 · Como Funciona', s8:'S8 · Diferenciais', s9:'S9 · Chamada Emocional',
-    s10:'S10 · FAQ', s11:'S11 · CTA Final'
-  };
-
-  let current = null;
-
-  function activate(id) {
-    if (current === id) return;
-    current = id;
-
-    document.querySelectorAll('.copy-section').forEach(el =>
-      el.classList.toggle('active', el.dataset.section === id));
-    document.querySelectorAll('.wf-block').forEach(el =>
-      el.classList.toggle('active', el.dataset.wf === id));
-    document.querySelectorAll('.wf-pip').forEach(el =>
-      el.classList.toggle('active', el.dataset.pip === id));
-
-    activeLabel.textContent = SECTION_NAMES[id] || id;
-
-    const block = document.getElementById('wf-' + id);
-    if (!block) return;
-    const paneRect  = wfPane.getBoundingClientRect();
-    const blockRect = block.getBoundingClientRect();
-    const target    = wfPane.scrollTop + (blockRect.top - paneRect.top)
-                      - (paneRect.height / 2) + (blockRect.height / 2);
-    wfPane.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
-  }
-
-  function updateActiveSection() {
-    const paneRect = copyPane.getBoundingClientRect();
-    const refY     = paneRect.top + PANE_HDR_H + 4;
-    const sections = Array.from(document.querySelectorAll('.copy-section[data-section]'));
-    let active = sections[0];
-    for (const s of sections) {
-      if (s.getBoundingClientRect().top <= refY) { active = s; } else { break; }
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => {
+      el.classList.remove('open');
+      el.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
     }
-    if (active) activate(active.dataset.section);
   }
 
-  let scrollTimer = null;
-  copyPane.addEventListener('scroll', () => {
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(updateActiveSection, 60);
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Hero elements reveal immediately on load
+  document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), 60 + i * 60);
   });
 
-  updateActiveSection();
+  // Products slider
+  (function () {
+    const track    = document.getElementById('productsTrack');
+    const dotsWrap = document.getElementById('productsDots');
+    const viewport = track.closest('.slider-viewport');
+    const cards    = Array.from(track.querySelectorAll('.card'));
+    const GAP      = 24;
+    let current    = 0;
 
-  /* ── Mobile tabs ── */
-  function switchTab(tab) {
-    const isCopy = tab === 'copy';
-    copyPane.classList.toggle('tab-active', isCopy);
-    wfPane.classList.toggle('tab-active', !isCopy);
-    document.getElementById('tabCopy').classList.toggle('active', isCopy);
-    document.getElementById('tabWf').classList.toggle('active', !isCopy);
-
-    // ao mostrar o wireframe, re-centraliza o bloco ativo
-    if (!isCopy && current) {
-      setTimeout(() => {
-        const block = document.getElementById('wf-' + current);
-        if (!block) return;
-        const paneRect  = wfPane.getBoundingClientRect();
-        const blockRect = block.getBoundingClientRect();
-        const target    = wfPane.scrollTop + (blockRect.top - paneRect.top)
-                          - (paneRect.height / 2) + (blockRect.height / 2);
-        wfPane.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
-      }, 50);
+    function getVisible() {
+      const w = viewport.offsetWidth;
+      if (w <= 520) return 1;
+      if (w <= 820) return 2;
+      return 3;
     }
-  }
+
+    function layout() {
+      const vis = getVisible();
+      const w = (viewport.offsetWidth - GAP * (vis - 1)) / vis;
+      cards.forEach(c => { c.style.flex = '0 0 ' + w + 'px'; c.style.width = w + 'px'; });
+    }
+
+    function maxIndex() {
+      return Math.max(0, cards.length - getVisible());
+    }
+
+    function goTo(i) {
+      current = Math.max(0, Math.min(i, maxIndex()));
+      const vis = getVisible();
+      const w   = (viewport.offsetWidth - GAP * (vis - 1)) / vis;
+      track.style.transform = 'translateX(-' + (current * (w + GAP)) + 'px)';
+      renderDots();
+      renderBtns();
+    }
+
+    function renderDots() {
+      dotsWrap.innerHTML = '';
+      for (var i = 0; i <= maxIndex(); i++) {
+        var b = document.createElement('button');
+        b.className = 'slider-dot' + (i === current ? ' active' : '');
+        b.setAttribute('aria-label', 'Ir para slide ' + (i + 1));
+        (function(idx) { b.onclick = function() { goTo(idx); }; })(i);
+        dotsWrap.appendChild(b);
+      }
+    }
+
+    function renderBtns() {
+      var prev = document.querySelector('.slider-prev');
+      var next = document.querySelector('.slider-next');
+      if (prev) prev.disabled = current <= 0;
+      if (next) next.disabled = current >= maxIndex();
+    }
+
+    window.slideProducts = function(d) { goTo(current + d); };
+
+    layout();
+    renderDots();
+    renderBtns();
+
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        current = Math.min(current, maxIndex());
+        layout();
+        goTo(current);
+      }, 100);
+    });
+  })();
 </script>
 </body>
 </html>

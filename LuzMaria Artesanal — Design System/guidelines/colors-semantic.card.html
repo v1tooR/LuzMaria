@@ -1,0 +1,31 @@
+<!-- @dsCard group="Colors" viewport="700x190" name="Semantic Roles" subtitle="Surfaces, text & accent aliases in context" -->
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; background: var(--ink-900); padding: 20px; font-family: var(--font-ui); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: var(--surface-card); border: 1px solid var(--border-card); border-radius: var(--radius-md); padding: 16px; }
+  .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-accent); margin-bottom: 8px; }
+  .strong { color: var(--text-strong); font-family: var(--font-display); font-size: 22px; }
+  .body { color: var(--text-body); font-family: var(--font-body); font-size: 15px; margin-top: 4px; }
+  .muted { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+  .ivory { background: var(--surface-ivory); border-radius: var(--radius-md); padding: 16px; }
+  .ivory .t { color: var(--text-on-ivory); font-family: var(--font-display); font-size: 22px; }
+  .ivory .m { color: var(--text-on-ivory-muted); font-size: 13px; margin-top: 4px; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="card">
+      <div class="lbl">surface-card · on dark</div>
+      <div class="strong">Velas artesanais</div>
+      <div class="body">text-body sobre superfície escura, alto contraste e legibilidade.</div>
+      <div class="muted">text-muted — legenda secundária</div>
+    </div>
+    <div class="ivory">
+      <div class="t" style="color:var(--text-on-ivory)">Bloco invertido</div>
+      <div class="m">surface-ivory para áreas de checkout limpas e claras.</div>
+      <div style="margin-top:10px; display:inline-block; background:var(--accent); color:var(--text-on-gold); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; padding:7px 14px; border-radius:var(--radius-md);">CTA dourado</div>
+    </div>
+  </div>
+</body></html>

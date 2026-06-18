@@ -1,0 +1,56 @@
+/* ───────────────────────────────────────────────
+   LuzMaria Artesanal — Typography tokens
+   Display: Cormorant Garamond (illuminated serif)
+   Body:    EB Garamond
+   UI:      Inter (labels, buttons, prices, badges)
+   Script:  Pinyon Script (taglines / signatures ONLY)
+   ─────────────────────────────────────────────── */
+:root {
+  /* Families */
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-body:    'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-ui:      'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-script:  'Pinyon Script', 'Tangerine', cursive;
+
+  /* Type scale (fluid-ready px values) */
+  --text-2xs: 11px;
+  --text-xs:  12px;
+  --text-sm:  14px;
+  --text-md:  16px;   /* body base */
+  --text-lg:  19px;
+  --text-xl:  24px;
+  --text-2xl: 32px;
+  --text-3xl: 42px;
+  --text-4xl: 56px;
+  --text-5xl: 76px;
+  --text-6xl: 104px;  /* hero display */
+
+  /* Weights */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Line heights */
+  --leading-tight:   1.08;  /* large display */
+  --leading-snug:    1.22;  /* headings */
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.72;  /* body copy */
+
+  /* Letter spacing */
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.08em;   /* UI labels / eyebrows */
+  --tracking-wider:  0.18em;   /* small caps eyebrows */
+
+  /* ── Semantic roles ── */
+  --type-hero:    var(--weight-medium) var(--text-6xl)/var(--leading-tight) var(--font-display);
+  --type-display: var(--weight-medium) var(--text-4xl)/var(--leading-tight) var(--font-display);
+  --type-h1:      var(--weight-semibold) var(--text-3xl)/var(--leading-snug) var(--font-display);
+  --type-h2:      var(--weight-semibold) var(--text-2xl)/var(--leading-snug) var(--font-display);
+  --type-h3:      var(--weight-semibold) var(--text-xl)/var(--leading-snug) var(--font-display);
+  --type-body:    var(--weight-regular) var(--text-md)/var(--leading-relaxed) var(--font-body);
+  --type-body-lg: var(--weight-regular) var(--text-lg)/var(--leading-relaxed) var(--font-body);
+  --type-label:   var(--weight-semibold) var(--text-xs)/1.2 var(--font-ui);
+  --type-price:   var(--weight-semibold) var(--text-lg)/1.2 var(--font-ui);
+}

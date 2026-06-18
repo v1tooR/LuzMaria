@@ -1,0 +1,79 @@
+/* ───────────────────────────────────────────────
+   LuzMaria Artesanal — Color tokens
+   Chiaroscuro: candlelight against deep dark.
+   Gold is reflected light — used sparingly, never wallpaper.
+   ─────────────────────────────────────────────── */
+:root {
+  /* ── Ink / graphite (backgrounds) ── */
+  --ink-900: #0E0D0C;   /* deepest — page base */
+  --ink-850: #131110;
+  --ink-800: #1A1715;   /* raised surfaces, cards */
+  --ink-700: #221E1B;   /* hairline-lifted surfaces */
+  --ink-600: #2E2823;   /* borders on dark, dividers */
+
+  /* ── Aged gold (primary accent — reflected light) ── */
+  --gold-300: #E2C765;  /* bright highlight, large display only */
+  --gold-400: #D4B24A;  /* accent text on dark */
+  --gold-500: #C9A227;  /* primary accent */
+  --gold-600: #B8860B;  /* deeper / pressed */
+  --gold-700: #8C6608;  /* shadowed gold */
+
+  /* ── Bordô / wine (secondary accent) ── */
+  --wine-500: #7A2A2C;
+  --wine-600: #6B2230;
+  --wine-700: #5C1A1B;
+  --wine-800: #451316;
+
+  /* ── Ivory / marfim (text + light surfaces) ── */
+  --ivory-100: #F4EEE0;
+  --ivory-200: #F2EAD8;  /* primary light text */
+  --ivory-300: #EDE4D3;
+  --ivory-400: #D8CDB8;  /* muted ivory */
+  --ivory-500: #B3A88F;  /* secondary text on dark */
+  --ivory-600: #8A7F6B;  /* tertiary / captions */
+
+  /* ── Functional ── */
+  --success-500: #5B7A4E;
+  --whatsapp-500: #25D366;
+  --whatsapp-600: #1EBE5A;
+
+  /* ─────────────────────────────────────────────
+     SEMANTIC ALIASES — reference these in components
+     ───────────────────────────────────────────── */
+
+  /* Surfaces */
+  --surface-page:    var(--ink-900);
+  --surface-raised:  var(--ink-850);
+  --surface-card:    var(--ink-800);
+  --surface-inset:   var(--ink-700);
+  --surface-ivory:   var(--ivory-200);  /* inverted / checkout blocks */
+
+  /* Text on dark */
+  --text-strong:  var(--ivory-200);
+  --text-body:    var(--ivory-400);
+  --text-muted:   var(--ivory-500);
+  --text-faint:   var(--ivory-600);
+  --text-accent:  var(--gold-400);
+
+  /* Text on ivory (inverted blocks) */
+  --text-on-ivory:        #1A1715;
+  --text-on-ivory-muted:  #5C5347;
+
+  /* Text on gold (high-contrast CTA) */
+  --text-on-gold: var(--ink-900);
+
+  /* Accents */
+  --accent:         var(--gold-500);
+  --accent-hover:   var(--gold-400);
+  --accent-press:   var(--gold-600);
+  --accent-wine:    var(--wine-700);
+
+  /* Borders & lines */
+  --border-hairline: rgba(201, 162, 39, 0.32);  /* fine gold filete */
+  --border-card:     rgba(201, 162, 39, 0.22);
+  --border-muted:    var(--ink-600);
+  --border-on-ivory: rgba(26, 23, 21, 0.14);
+
+  /* Focus ring (accessible, gold) */
+  --ring-accent: rgba(201, 162, 39, 0.45);
+}

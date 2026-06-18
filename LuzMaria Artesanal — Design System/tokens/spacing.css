@@ -1,0 +1,54 @@
+/* ───────────────────────────────────────────────
+   LuzMaria Artesanal — Spacing, radii, shadows, motion
+   ─────────────────────────────────────────────── */
+:root {
+  /* Spacing scale (4px base) */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  /* Section rhythm */
+  --section-y:        var(--space-9);
+  --section-y-mobile: var(--space-8);
+  --container-max:    1180px;
+  --container-pad:    var(--space-5);
+
+  /* Radii — restrained: nearly straight, lightly softened */
+  --radius-none: 0;
+  --radius-sm:   3px;
+  --radius-md:   5px;   /* cards, buttons */
+  --radius-lg:   8px;
+  --radius-pill: 999px; /* tags / chips only */
+
+  /* Borders */
+  --border-w-hair: 1px;   /* gold filete */
+  --border-w-base: 1.5px;
+
+  /* Shadows — soft, warm, low (altar glow, never harsh) */
+  --shadow-sm:   0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 6px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg:   0 18px 60px rgba(0, 0, 0, 0.55);
+  /* Candle glow — warm gold halo for hero/active product */
+  --glow-candle: 0 0 60px rgba(201, 162, 39, 0.16), 0 0 140px rgba(201, 162, 39, 0.07);
+  --glow-soft:   0 0 32px rgba(201, 162, 39, 0.12);
+
+  /* Motion — gentle fades, no bounce. Devotional calm. */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */
+  --ease-soft:  cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --dur-fast:   150ms; /* @kind other */
+  --dur-base:   260ms; /* @kind other */
+  --dur-slow:   480ms; /* @kind other */
+
+  /* Z layers */
+  --z-nav:    100; /* @kind other */
+  --z-overlay:200; /* @kind other */
+  --z-modal:  300; /* @kind other */
+  --z-toast:  400; /* @kind other */
+}

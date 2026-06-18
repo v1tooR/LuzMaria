@@ -1,0 +1,67 @@
+/* ───────────────────────────────────────────────
+   LuzMaria Artesanal — Base / reset utilities
+   Optional ambient helpers. Tokens do the heavy lifting.
+   ─────────────────────────────────────────────── */
+
+/* A reusable thin gold filete divider (use sparingly between blocks) */
+.lm-filete {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-600) 18%,
+    var(--gold-400) 50%,
+    var(--gold-600) 82%,
+    transparent
+  );
+  opacity: 0.7;
+}
+
+/* Centered ornamental divider: filete with a diamond node */
+.lm-filete-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--gold-500);
+}
+.lm-filete-node::before,
+.lm-filete-node::after {
+  content: "";
+  height: 1px;
+  width: 72px;
+  background: linear-gradient(90deg, transparent, var(--gold-500));
+}
+.lm-filete-node::after { transform: scaleX(-1); }
+
+/* Eyebrow / small-caps label */
+.lm-eyebrow {
+  font: var(--type-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--text-accent);
+}
+
+/* Script accent (taglines / signatures ONLY — never buttons/UI) */
+.lm-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  color: var(--gold-400);
+  line-height: 1;
+}
+
+/* Accessible focus ring */
+.lm-focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--ring-accent);
+}
+
+/* Page base helper (apply to demo bodies) */
+.lm-page {
+  background: var(--surface-page);
+  color: var(--text-body);
+  font: var(--type-body);
+  -webkit-font-smoothing: antialiased;
+}
