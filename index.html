@@ -1852,15 +1852,18 @@
       /* CTA row */
       .hero-cta-row { flex-direction: column; align-items: stretch; }
 
+      /* Disable scroll animations on mobile — reveal everything immediately */
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
       .products-grid {
         grid-template-columns: 1fr;
         gap: var(--sp-5);
         max-width: 430px;
         margin-inline: auto;
-      }
-      .products-grid.reveal {
-        opacity: 1;
-        transform: none;
       }
       .card {
         min-width: 0;
