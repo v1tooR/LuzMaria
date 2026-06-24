@@ -2,7 +2,7 @@
 
 ```jsx
 <WhatsAppButton
-  phone="5511999999999"
+  phone="5512997777389"
   message="Vim pela landing page e tenho interesse na Vela Nossa Senhora Aparecida. Pode me passar valores e prazo?"
 >Quero fazer minha encomenda</WhatsAppButton>
 ```

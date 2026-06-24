@@ -6,7 +6,7 @@
   description="Peça delicada e devocional, ideal para oratórios e presentes."
   price="R$ 68,00"
   image="assets/img/candle-aparecida.jpg"
-  phone="5511999999999"
+  phone="5512997777389"
   message="Vim pela landing page e tenho interesse na Vela Nossa Senhora Aparecida..."
 />
 ```

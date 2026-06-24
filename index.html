@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LuzMaria Artesanal — Velas devocionais feitas à mão</title>
+  <link rel="icon" type="image/webp" href="assets/favicon.webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Pinyon+Script&display=swap" rel="stylesheet" />
@@ -866,71 +867,21 @@
     }
 
     /* ================================================================
-       PRODUCTS SLIDER
+       PRODUCTS GRID
     ================================================================ */
-    .products-slider {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-4);
-    }
-    .slider-viewport {
-      overflow: hidden;
-      flex: 1;
-      min-width: 0;
-    }
-    .slider-track {
-      display: flex;
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: var(--sp-5);
-      transition: transform 0.48s cubic-bezier(0.22, 0.61, 0.36, 1);
-      will-change: transform;
     }
-    .slider-btn {
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 1px solid var(--border-warm);
-      background: #FFFFFF;
-      color: var(--gold-600);
-      font-size: 18px;
-      line-height: 1;
-      box-shadow: var(--shadow-xs);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--dur-base) var(--ease-soft),
-                  border-color var(--dur-base) var(--ease-soft),
-                  box-shadow var(--dur-base) var(--ease-soft);
+    @media (max-width: 1100px) {
+      .products-grid { grid-template-columns: repeat(3, 1fr); }
     }
-    .slider-btn:hover:not(:disabled) {
-      background: var(--gold-500);
-      color: var(--ink-900);
-      border-color: var(--gold-500);
-      box-shadow: var(--shadow-sm);
+    @media (max-width: 720px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-4); }
     }
-    .slider-btn:disabled {
-      opacity: 0.28;
-      cursor: default;
-    }
-    .slider-dots {
-      display: flex;
-      justify-content: center;
-      gap: 9px;
-      margin-top: var(--sp-5);
-    }
-    .slider-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--border-card);
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      transition: background var(--dur-base), transform var(--dur-base);
-    }
-    .slider-dot.active {
-      background: var(--gold-500);
-      transform: scale(1.4);
+    @media (max-width: 380px) {
+      .products-grid { grid-template-columns: 1fr; }
     }
     .card {
       display: flex;
@@ -1647,6 +1598,131 @@
     .footer-copy { font-size: 14px; color: var(--text-faint); }
 
     /* ================================================================
+       PHOTO STRIP (marquee contínuo)
+    ================================================================ */
+    .photo-strip {
+      overflow: hidden;
+      padding: 12px 0;
+      background: var(--surface-parchment);
+      border-top: 1px solid var(--border-muted);
+      border-bottom: 1px solid var(--border-muted);
+      position: relative;
+    }
+    .photo-strip::before,
+    .photo-strip::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 80px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .photo-strip::before {
+      left: 0;
+      background: linear-gradient(to right, var(--surface-parchment), transparent);
+    }
+    .photo-strip::after {
+      right: 0;
+      background: linear-gradient(to left, var(--surface-parchment), transparent);
+    }
+    .photo-strip-track {
+      display: flex;
+      gap: 8px;
+      width: max-content;
+      animation: strip-scroll 48s linear infinite;
+    }
+    .photo-strip:hover .photo-strip-track {
+      animation-play-state: paused;
+    }
+    @keyframes strip-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .photo-strip-item {
+      flex-shrink: 0;
+      height: 220px;
+      width: 165px;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-xs);
+    }
+    .photo-strip-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.5s var(--ease-soft), filter 0.5s var(--ease-soft);
+      filter: brightness(0.96) saturate(0.92);
+    }
+    .photo-strip-item:hover img {
+      transform: scale(1.06);
+      filter: brightness(1.02) saturate(1.08);
+    }
+    @media (max-width: 640px) {
+      .photo-strip-item { height: 170px; width: 130px; }
+    }
+
+    /* ================================================================
+       GALLERY SECTION
+    ================================================================ */
+    .gallery-mosaic {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 180px;
+      gap: var(--sp-3);
+      margin-top: var(--sp-7);
+    }
+    .gm-item {
+      border-radius: var(--r-md);
+      overflow: hidden;
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-xs);
+      background: var(--ivory-100);
+      transition: box-shadow var(--dur-base) var(--ease-soft),
+                  transform var(--dur-base) var(--ease-out),
+                  border-color var(--dur-base);
+    }
+    .gm-item:hover {
+      box-shadow: var(--shadow-md), var(--glow-gold);
+      transform: translateY(-3px);
+      border-color: var(--gold-500);
+    }
+    .gm-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      transition: transform 0.6s var(--ease-soft);
+    }
+    .gm-item:hover img { transform: scale(1.07); }
+    .gm-c3 { grid-column: span 3; }
+    .gm-c4 { grid-column: span 4; }
+    .gm-c5 { grid-column: span 5; }
+    .gm-c6 { grid-column: span 6; }
+    .gm-r2 { grid-row: span 2; }
+
+    @media (max-width: 960px) {
+      .gallery-mosaic {
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: 160px;
+      }
+      .gm-c3 { grid-column: span 3; }
+      .gm-c4 { grid-column: span 3; }
+      .gm-c5 { grid-column: span 3; }
+      .gm-c6 { grid-column: span 6; }
+    }
+    @media (max-width: 640px) {
+      .gallery-mosaic {
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 130px;
+      }
+      .gm-c3, .gm-c4, .gm-c5 { grid-column: span 2; }
+      .gm-c6 { grid-column: span 4; }
+      .gm-r2 { grid-row: span 1; }
+    }
+
+    /* ================================================================
        SCROLL REVEAL
     ================================================================ */
     .reveal {
@@ -1685,7 +1761,41 @@
 
     /* ─── Mobile ≤640px ─── */
     @media (max-width: 640px) {
-      :root { --section-y: 64px; }
+      :root {
+        --section-y: 64px;
+        --container-pad: clamp(16px, 4.5vw, 20px);
+      }
+
+      .nav-inner {
+        padding: 12px var(--container-pad);
+        gap: var(--sp-3);
+      }
+      .nav-wordmark-name { font-size: 24px; }
+      .nav-wordmark-sub { font-size: 8px; letter-spacing: 0.34em; }
+      .nav .btn-sm {
+        padding: 10px 14px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      .btn {
+        max-width: 100%;
+        min-width: 0;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.15;
+        letter-spacing: 0.07em;
+      }
+      .btn-lg {
+        width: 100%;
+        padding: 16px 18px;
+        font-size: 12px;
+      }
+      .btn-md {
+        padding: 14px 20px;
+        font-size: 12px;
+      }
+      .btn svg { width: 16px; height: 16px; }
 
       /* Hero */
       .hero { padding: 72px 0 52px; }
@@ -1708,7 +1818,18 @@
       .hero-proof-label { font-size: 9px; }
 
       /* CTA row */
-      .hero-cta-row { flex-direction: column; align-items: flex-start; }
+      .hero-cta-row { flex-direction: column; align-items: stretch; }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-5);
+      }
+      .card-body { padding: var(--sp-4); }
+      .product-whatsapp-btn {
+        padding: 12px 14px;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+      }
 
       /* Hide animated scroll cue */
       .hero-scroll { display: none; }
@@ -1716,8 +1837,6 @@
       /* Other sections */
       .audience-grid, .diff-grid { grid-template-columns: 1fr; }
       .cta-band { padding: 80px 0; }
-      .slider-btn { width: 34px; height: 34px; font-size: 14px; }
-      .products-slider { gap: var(--sp-2); }
     }
 
     /* ─── Very small screens ≤390px ─── */
@@ -1742,7 +1861,7 @@
       <a href="#sobre" class="nav-link">Sobre</a>
       <a href="#como-funciona" class="nav-link">Como funciona</a>
       <a href="#duvidas" class="nav-link">Dúvidas</a>
-      <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+um+pedido." target="_blank" rel="noopener" class="btn btn-primary btn-sm">
+      <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+um+pedido." target="_blank" rel="noopener" class="btn btn-primary btn-sm">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         Encomendar
       </a>
@@ -1763,7 +1882,7 @@
         <h1 class="hero-title reveal reveal-d1">Iluminar momentos<br />de fé e devoção</h1>
         <p class="hero-sub reveal reveal-d2">Peças feitas à mão, com delicadeza, significado e inspiração em Nossa Senhora Aparecida. Perfeitas para presentear, decorar seu cantinho de oração ou tornar datas especiais ainda mais memoráveis.</p>
         <div class="hero-cta-row reveal reveal-d3">
-          <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+          <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
             Quero fazer minha encomenda
           </a>
@@ -1793,7 +1912,7 @@
         <span class="hero-corner-tr" aria-hidden="true"></span>
         <span class="hero-corner-bl" aria-hidden="true"></span>
         <div class="hero-media">
-          <img src="assets/foto1.jpg" alt="Luz Maria segurando vela artesanal decorada com ornamentos dourados" />
+          <img src="assets/luzmaria.webp" alt="Luz Maria segurando vela artesanal decorada com ornamentos dourados" />
         </div>
         <div class="hero-img-badge" aria-hidden="true">
           <span class="hero-img-badge-dot"></span>
@@ -1855,6 +1974,32 @@
   </div>
 </section>
 
+<!-- ══════════════════════════════════════════ PHOTO STRIP -->
+<div class="photo-strip" aria-hidden="true">
+  <div class="photo-strip-track">
+    <!-- set 1 -->
+    <div class="photo-strip-item"><img src="assets/velaextra.jpg"  alt="Vela artesanal decorada" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (1).jpeg" alt="Velas oratórias artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/velaextra2.jpg" alt="Vela artesanal dourada" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (2).jpeg" alt="Velas decorativas artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/foto4.jpg"      alt="Oratório decorado com velas artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (4).jpeg" alt="Vela oratória com detalhes dourados" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (5).jpeg" alt="Vela Nossa Senhora Aparecida" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.44.49 (2).jpeg" alt="Velas oratórias refil artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/foto2.jpg" alt="Vela artesanal religiosa" loading="lazy" /></div>
+    <!-- set 2 — duplicado para loop contínuo -->
+    <div class="photo-strip-item"><img src="assets/velaextra.jpg"  alt="Vela artesanal decorada" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (1).jpeg" alt="Velas oratórias artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/velaextra2.jpg" alt="Vela artesanal dourada" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (2).jpeg" alt="Velas decorativas artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/foto4.jpg"      alt="Oratório decorado com velas artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (4).jpeg" alt="Vela oratória com detalhes dourados" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (5).jpeg" alt="Vela Nossa Senhora Aparecida" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/WhatsApp Image 2026-06-08 at 14.44.49 (2).jpeg" alt="Velas oratórias refil artesanais" loading="lazy" /></div>
+    <div class="photo-strip-item"><img src="assets/products/foto2.jpg" alt="Vela artesanal religiosa" loading="lazy" /></div>
+  </div>
+</div>
+
 <hr class="filete" />
 
 <!-- ════════════════════════════════════════════ S3: BRAND STORY / SOBRE -->
@@ -1909,10 +2054,7 @@
       <p class="section-sub">Conheça os modelos disponíveis e fale pelo WhatsApp para consultar valores, disponibilidade e personalização.</p>
     </div>
 
-    <div class="products-slider reveal">
-      <button class="slider-btn slider-prev" onclick="slideProducts(-1)" aria-label="Vela anterior" disabled>&#8592;</button>
-      <div class="slider-viewport">
-        <div class="slider-track" id="productsTrack">
+    <div class="products-grid reveal">
 
           <article class="card">
             <div class="card-photo">
@@ -1922,7 +2064,7 @@
             <div class="card-body">
               <h3 class="card-name">Vela Nossa Senhora Aparecida</h3>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Nossa+Senhora+Aparecida.+Pode+me+passar+valores%2C+disponibilidade+e+prazo%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Nossa+Senhora+Aparecida.+Pode+me+passar+valores%2C+disponibilidade+e+prazo%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -1937,7 +2079,7 @@
             <div class="card-body">
               <h3 class="card-name">Vela Sagrado Coração</h3>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Sagrado+Cora%C3%A7%C3%A3o.+Pode+me+enviar+valores+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+Sagrado+Cora%C3%A7%C3%A3o.+Pode+me+enviar+valores+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -1952,7 +2094,7 @@
             <div class="card-body">
               <h3 class="card-name">Kit Presente de Fé</h3>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+mais+sobre+o+Kit+Presente+de+F%C3%A9.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+mais+sobre+o+Kit+Presente+de+F%C3%A9.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -1967,7 +2109,7 @@
             <div class="card-body">
               <h3 class="card-name">Velas para Oratório</h3>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+velas+para+orat%C3%B3rio.+Pode+me+enviar+os+modelos+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+velas+para+orat%C3%B3rio.+Pode+me+enviar+os+modelos+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -1989,7 +2131,7 @@
               <h3 class="card-name">Velas oratórias</h3>
               <p class="card-price">BRL 49,90</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2005,7 +2147,7 @@
               <h3 class="card-name">Velas oratórias Nossa Senhora Aparecida</h3>
               <p class="card-price">BRL 49,90</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+Nossa+Senhora+Aparecida.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+Nossa+Senhora+Aparecida.+Pode+me+enviar+as+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2027,7 +2169,7 @@
               <h3 class="card-name">Velas oratórias refil</h3>
               <p class="card-price">BRL 49,90</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+refil+de+BRL+49%2C90.+Pode+me+enviar+as+varia%C3%A7%C3%B5es+dispon%C3%ADveis%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+refil+de+BRL+49%2C90.+Pode+me+enviar+as+varia%C3%A7%C3%B5es+dispon%C3%ADveis%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2042,7 +2184,7 @@
             <div class="card-body">
               <h3 class="card-name">Lembrancinhas Religiosas</h3>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+sobre+lembrancinhas+religiosas+personalizadas.+Pode+me+passar+op%C3%A7%C3%B5es+para+eventos%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+saber+sobre+lembrancinhas+religiosas+personalizadas.+Pode+me+passar+op%C3%A7%C3%B5es+para+eventos%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2058,7 +2200,7 @@
               <h3 class="card-name">Vela oratória Sagrada Família</h3>
               <p class="card-price">BRL 49,90</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+orat%C3%B3ria+Sagrada+Fam%C3%ADlia.+Pode+me+enviar+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+na+Vela+orat%C3%B3ria+Sagrada+Fam%C3%ADlia.+Pode+me+enviar+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2074,7 +2216,7 @@
               <h3 class="card-name">Terço de aço inox Nossa Senhora Aparecida</h3>
               <p class="card-price">BRL 20,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Ter%C3%A7o+de+a%C3%A7o+inox+Nossa+Senhora+Aparecida.+Pode+me+enviar+valores+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Ter%C3%A7o+de+a%C3%A7o+inox+Nossa+Senhora+Aparecida.+Pode+me+enviar+valores+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2090,7 +2232,7 @@
               <h3 class="card-name">Nossa Senhora Aparecida</h3>
               <p class="card-price">BRL 30,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+produto+Nossa+Senhora+Aparecida.+Pode+me+enviar+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+produto+Nossa+Senhora+Aparecida.+Pode+me+enviar+op%C3%A7%C3%B5es+e+valores%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2106,7 +2248,7 @@
               <h3 class="card-name">Kit Nossa Senhora Aparecida</h3>
               <p class="card-price">BRL 115,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Kit+Nossa+Senhora+Aparecida+de+BRL+115%2C00.+Pode+me+enviar+o+que+inclui+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Kit+Nossa+Senhora+Aparecida+de+BRL+115%2C00.+Pode+me+enviar+o+que+inclui+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2122,7 +2264,7 @@
               <h3 class="card-name">Kit Nossa Senhora Aparecida e Vela oratória</h3>
               <p class="card-price">BRL 110,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Kit+Nossa+Senhora+Aparecida+e+Vela+orat%C3%B3ria+de+BRL+110%2C00.+Pode+me+enviar+detalhes%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Kit+Nossa+Senhora+Aparecida+e+Vela+orat%C3%B3ria+de+BRL+110%2C00.+Pode+me+enviar+detalhes%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2138,7 +2280,7 @@
               <h3 class="card-name">Terço de noiva</h3>
               <p class="card-price">BRL 60,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Ter%C3%A7o+de+noiva+de+BRL+60%2C00.+Pode+me+enviar+detalhes+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+no+Ter%C3%A7o+de+noiva+de+BRL+60%2C00.+Pode+me+enviar+detalhes+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2154,7 +2296,7 @@
               <h3 class="card-name">Velas oratórias com luz de Led</h3>
               <p class="card-price">BRL 65,00</p>
               <div class="card-cta">
-                <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+com+luz+de+Led+de+BRL+65%2C00.+Pode+me+enviar+modelos+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
+                <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+tenho+interesse+nas+Velas+orat%C3%B3rias+com+luz+de+Led+de+BRL+65%2C00.+Pode+me+enviar+modelos+e+disponibilidade%3F" target="_blank" rel="noopener" class="btn btn-outline btn-sm btn-full product-whatsapp-btn">
                   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                   Pedir no WhatsApp
                 </a>
@@ -2162,11 +2304,7 @@
             </div>
           </article>
 
-        </div>
-      </div>
-      <button class="slider-btn slider-next" onclick="slideProducts(1)" aria-label="Próxima vela">&#8594;</button>
     </div>
-    <div class="slider-dots" id="productsDots"></div>
   </div>
 </section>
 
@@ -2191,7 +2329,7 @@
           <span class="tag">Intenções especiais</span>
           <span class="tag">Aniversário</span>
         </div>
-        <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+encomendar+uma+vela+personalizada.+Pode+me+explicar+as+op%C3%A7%C3%B5es%3F" target="_blank" rel="noopener" class="btn btn-primary btn-md">
+        <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+encomendar+uma+vela+personalizada.+Pode+me+explicar+as+op%C3%A7%C3%B5es%3F" target="_blank" rel="noopener" class="btn btn-primary btn-md">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
           Falar sobre personalização
         </a>
@@ -2404,6 +2542,54 @@
 
 <hr class="filete" />
 
+<!-- ══════════════════════════════════════════ S8b: GALLERY -->
+<section class="section section-parchment" id="galeria">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow"><span class="hero-eyebrow-ornament" aria-hidden="true">✦&thinsp;</span>Galeria de criações</p>
+      <h2 style="font-size:clamp(26px,3.5vw,40px);">Cada peça conta uma história</h2>
+      <div class="filete-node"><div class="filete-diamond"></div></div>
+      <p class="section-sub">Veja de perto o cuidado artesanal em cada detalhe — pedras, cores e devoção em cada criação.</p>
+    </div>
+
+    <div class="gallery-mosaic reveal">
+
+      <!-- Linha 1: col 4 | col 3 | col 5 -->
+      <div class="gm-item gm-c4 gm-r2">
+        <img src="assets/foto1.jpg" alt="Vela artesanal LuzMaria com detalhes dourados" loading="lazy" />
+      </div>
+      <div class="gm-item gm-c3">
+        <img src="assets/velaextra.jpg" alt="Vela artesanal decorativa Nossa Senhora" loading="lazy" />
+      </div>
+      <div class="gm-item gm-c5">
+        <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.38 (4).jpeg" alt="Vela oratória artesanal com pedras e ornamentos" loading="lazy" />
+      </div>
+
+      <!-- Linha 2: col 3 | col 5 (foto4 fica ao lado da tall) -->
+      <div class="gm-item gm-c3">
+        <img src="assets/velaextra2.jpg" alt="Vela artesanal dourada com detalhes em pedra" loading="lazy" />
+      </div>
+      <div class="gm-item gm-c5">
+        <img src="assets/foto4.jpg" alt="Oratório decorado com velas artesanais LuzMaria" loading="lazy" />
+      </div>
+
+      <!-- Linha 3: col 6 | col 3 | col 3 -->
+      <div class="gm-item gm-c6">
+        <img src="assets/products/WhatsApp Image 2026-06-08 at 14.15.39 (5).jpeg" alt="Conjunto de velas artesanais Nossa Senhora Aparecida" loading="lazy" />
+      </div>
+      <div class="gm-item gm-c3">
+        <img src="assets/products/WhatsApp Image 2026-06-08 at 14.44.49 (2).jpeg" alt="Velas oratórias refil artesanais coloridas" loading="lazy" />
+      </div>
+      <div class="gm-item gm-c3">
+        <img src="assets/products/foto2.jpg" alt="Vela religiosa artesanal com medalha e pedras" loading="lazy" />
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="filete" />
+
 <!-- ══════════════════════════════════════════ S9: EMOTIONAL CTA -->
 <section class="section emotional" id="fe">
   <div class="container">
@@ -2433,7 +2619,7 @@
         <div class="filete-node" style="margin-bottom:var(--sp-5);"><div class="filete-diamond"></div></div>
         <p class="emotional-body">Uma vela acesa pode tornar um ambiente mais acolhedor, uma oração mais especial e um presente ainda mais cheio de significado.</p>
         <span class="emotional-script">acenda sua fé</span>
-        <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+escolher+minha+vela+artesanal." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+        <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+escolher+minha+vela+artesanal." target="_blank" rel="noopener" class="btn btn-primary btn-lg">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
           Quero escolher minha vela
         </a>
@@ -2518,7 +2704,7 @@
       <p class="eyebrow">Ilumine momentos especiais</p>
       <h2 class="cta-band-title">Acenda uma luz de fé hoje</h2>
       <p class="cta-band-sub">Escolha sua vela artesanal católica e fale agora pelo WhatsApp para consultar modelos, valores e disponibilidade.</p>
-      <a href="https://wa.me/5511999999999?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda+de+vela+artesanal." target="_blank" rel="noopener" class="btn btn-dark btn-lg">
+      <a href="https://wa.me/5512997777389?text=Ol%C3%A1%21+Vim+pela+landing+page+e+gostaria+de+fazer+minha+encomenda+de+vela+artesanal." target="_blank" rel="noopener" class="btn btn-dark btn-lg">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.821 11.821 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.017-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         Fazer minha encomenda
       </a>
@@ -2577,75 +2763,6 @@
     setTimeout(() => el.classList.add('in'), 60 + i * 60);
   });
 
-  // Products slider
-  (function () {
-    const track    = document.getElementById('productsTrack');
-    const dotsWrap = document.getElementById('productsDots');
-    const viewport = track.closest('.slider-viewport');
-    const cards    = Array.from(track.querySelectorAll('.card'));
-    const GAP      = 24;
-    let current    = 0;
-
-    function getVisible() {
-      const w = viewport.offsetWidth;
-      if (w <= 520) return 1;
-      if (w <= 820) return 2;
-      return 3;
-    }
-
-    function layout() {
-      const vis = getVisible();
-      const w = (viewport.offsetWidth - GAP * (vis - 1)) / vis;
-      cards.forEach(c => { c.style.flex = '0 0 ' + w + 'px'; c.style.width = w + 'px'; });
-    }
-
-    function maxIndex() {
-      return Math.max(0, cards.length - getVisible());
-    }
-
-    function goTo(i) {
-      current = Math.max(0, Math.min(i, maxIndex()));
-      const vis = getVisible();
-      const w   = (viewport.offsetWidth - GAP * (vis - 1)) / vis;
-      track.style.transform = 'translateX(-' + (current * (w + GAP)) + 'px)';
-      renderDots();
-      renderBtns();
-    }
-
-    function renderDots() {
-      dotsWrap.innerHTML = '';
-      for (var i = 0; i <= maxIndex(); i++) {
-        var b = document.createElement('button');
-        b.className = 'slider-dot' + (i === current ? ' active' : '');
-        b.setAttribute('aria-label', 'Ir para slide ' + (i + 1));
-        (function(idx) { b.onclick = function() { goTo(idx); }; })(i);
-        dotsWrap.appendChild(b);
-      }
-    }
-
-    function renderBtns() {
-      var prev = document.querySelector('.slider-prev');
-      var next = document.querySelector('.slider-next');
-      if (prev) prev.disabled = current <= 0;
-      if (next) next.disabled = current >= maxIndex();
-    }
-
-    window.slideProducts = function(d) { goTo(current + d); };
-
-    layout();
-    renderDots();
-    renderBtns();
-
-    var resizeTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(function() {
-        current = Math.min(current, maxIndex());
-        layout();
-        goTo(current);
-      }, 100);
-    });
-  })();
 </script>
 </body>
 </html>
