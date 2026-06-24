@@ -902,17 +902,18 @@
     ================================================================ */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: var(--sp-5);
+      align-items: stretch;
     }
     @media (max-width: 1100px) {
-      .products-grid { grid-template-columns: repeat(3, 1fr); }
+      .products-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
     }
     @media (max-width: 720px) {
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: var(--sp-4); }
+      .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
     }
-    @media (max-width: 380px) {
-      .products-grid { grid-template-columns: 1fr; }
+    @media (max-width: 560px) {
+      .products-grid { grid-template-columns: 1fr; max-width: 430px; margin-inline: auto; }
     }
     .card {
       display: flex;
@@ -1854,8 +1855,24 @@
       .products-grid {
         grid-template-columns: 1fr;
         gap: var(--sp-5);
+        max-width: 430px;
+        margin-inline: auto;
+      }
+      .products-grid.reveal {
+        opacity: 1;
+        transform: none;
+      }
+      .card {
+        min-width: 0;
+      }
+      .card-photo {
+        aspect-ratio: 1 / 1;
       }
       .card-body { padding: var(--sp-4); }
+      .card-name {
+        font-size: clamp(20px, 6vw, 24px);
+        overflow-wrap: anywhere;
+      }
       .product-whatsapp-btn {
         padding: 12px 14px;
         font-size: 11px;
@@ -2798,16 +2815,20 @@
   }
 
   // Scroll reveal
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
 
   // Hero elements reveal immediately on load
   document.querySelectorAll('.hero .reveal').forEach((el, i) => {
